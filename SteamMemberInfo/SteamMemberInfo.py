@@ -1,6 +1,8 @@
 
 import dota2api
-import json,time
+import json,time,os
+
+
 __steam_api_key__= None
 __game_data__ = None
 
@@ -15,9 +17,18 @@ def get_game_details(dota2_game_id):
     global __game_data__
     if not __game_data__ or __game_data__['match_id'] !=  dota2_game_id:
         print("start to get game details"+str(dota2_game_id))
-        __game_data__ =  api.get_match_details(match_id=dota2_game_id)
+    #    __game_data__ =  api.get_match_details(match_id=dota2_game_id)
+
+    #with open('file.txt', 'w') as file:
+    #     file.write(json.dumps(__game_data__))
+
+    with open('file.txt', 'r') as file:
+         content = file.read()
+    __game_data__ = json.loads(content)
     return __game_data__
 
+def export_dict_to_file(dict,file):
+    pass
 def get_game_player_gpm(dota2_game_id,dota2_player_id):
     global __game_data__
     if not __game_data__ or __game_data__['match_id'] !=  dota2_game_id:
@@ -242,9 +253,12 @@ def init_steam_api_key(name):
 
 
 if __name__ == "__main__":
-    medusa = MemberInfo(218444811)
+    #medusa = MemberInfo(218444811)
     #print(medusa.member_id)
-    medusa.process()
-    medusa.output()
+    #medusa.process()
+    #medusa.output()
+
+    #get_game_details(3463314239)
+    print(os.getcwd())
 
 
