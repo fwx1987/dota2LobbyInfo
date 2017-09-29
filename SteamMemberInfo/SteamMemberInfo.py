@@ -1,7 +1,7 @@
 
 import dota2api
 import json,time,os
-
+from operator import itemgetter,attrgetter
 
 __steam_api_key__= None
 __game_data__ = None
@@ -17,14 +17,14 @@ def get_game_details(dota2_game_id):
     global __game_data__
     if not __game_data__ or __game_data__['match_id'] !=  dota2_game_id:
         print("start to get game details"+str(dota2_game_id))
-    #    __game_data__ =  api.get_match_details(match_id=dota2_game_id)
+        __game_data__ =  api.get_match_details(match_id=dota2_game_id)
 
     #with open('file.txt', 'w') as file:
     #     file.write(json.dumps(__game_data__))
 
-    with open('file.txt', 'r') as file:
-         content = file.read()
-    __game_data__ = json.loads(content)
+    #with open('file.txt', 'r') as file:
+    #     content = file.read()
+    #__game_data__ = json.loads(content)
     return __game_data__
 
 def export_dict_to_file(dict,file):
@@ -117,7 +117,10 @@ class HeroRecord:
         else:
             self.win_rate = 100*((self.number_of_games -1)*self.win_rate/100-1)/self.number_of_games
             self.gpm_for_lose = (number_of_lose*self.gpm_for_lose+gpm)/self.number_of_games
-
+    def output(self):
+        print("hero id: "+str(self.hero_id))
+        print("number of games: "+str(self.number_of_games))
+        pass
 class MemberInfo:
     #repostiory data
     member_id = ""
@@ -223,6 +226,14 @@ class MemberInfo:
         else:
             self.total_avg_lose_gpm = total_lose_gpm/number_of_lose
 
+        self.sort_hero_record()
+
+
+    def sort_hero_record(self):
+
+        self.hero_record = sorted(self.hero_record,key=attrgetter('number_of_games'),reverse=True)
+        pass
+
     def output(self):
         print(self.member_id)
         print(self.hero_record)
@@ -235,6 +246,13 @@ class MemberInfo:
         print("total avg win gpm"+str(self.total_avg_win_gpm))
         print("total avg lose gpm"+str(self.total_avg_lose_gpm))
         print("total number of heros record collected:"+str(len(self.hero_record)))
+
+        for hero in self.hero_record:
+            print ("hero id:"+str(hero.hero_id))
+            print ("hero played times:"+str(hero.number_of_games))
+            print ("hero win rate"+str(hero.win_rate))
+            print ("gpm for win"+str(hero.gpm_for_win))
+            print ("gpm for lose"+str(hero.gpm_for_lose))
 
 
 def init_steam_api_key(name):
@@ -253,12 +271,21 @@ def init_steam_api_key(name):
 
 
 if __name__ == "__main__":
-    #medusa = MemberInfo(218444811)
+    medusa = MemberInfo(218444811)
     #print(medusa.member_id)
-    #medusa.process()
-    #medusa.output()
+    medusa.process()
+    medusa.output()
 
     #get_game_details(3463314239)
-    print(os.getcwd())
+    #print(os.getcwd())
+
+    #objs = [HeroRecord(101,1,100),HeroRecord(201,2,100),HeroRecord(200,3,1000)]
+
+    #objs = sorted(objs,key=attrgetter('number_of_games'),reverse=True)
+
+    #for obj in objs:
+    #    obj.output()
+
+    pass
 
 
