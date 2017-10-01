@@ -2,7 +2,8 @@
 import dota2api
 import json,time,os
 from operator import itemgetter,attrgetter
-
+import sqlite3
+from util  import Util
 import os.path
 __steam_api_key__= None
 __game_data__ = None
@@ -23,7 +24,21 @@ def get_game_details(dota2_game_id):
     if not __game_data__ or __game_data__['match_id'] !=  dota2_game_id:
         #print("start to get game details: "+str(dota2_game_id))
         #__game_data__ =  api.get_match_details(match_id=dota2_game_id)
+
+
+        if Util.dota_is_match_exist(dota2_game_id):
+            __game_data__ = json.loads(Util.dota_get_match_details(dota2_game_id))
+        else:
+            __game_data__ = api.get_match_details(match_id=dota2_game_id)
+            Util.dota_insert_match_details(dota2_game_id,json.dumps(__game_data__))
+        return __game_data__
+'''
         game_file =  "D:/PycharmProjects/data/game/"+str(dota2_game_id)+".txt"
+
+
+
+
+
         if os.path.exists(game_file):
             #print ("has exsting file:"+game_file)
             with open(game_file, 'r') as file:
@@ -42,7 +57,7 @@ def get_game_details(dota2_game_id):
     #     content = file.read()
     #__game_data__ = json.loads(content)
     return __game_data__
-
+'''
 def export_dict_to_file(dict,file):
     pass
 def get_game_player_gpm(dota2_game_id,dota2_player_id):
