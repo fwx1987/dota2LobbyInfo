@@ -255,10 +255,10 @@ class MemberInfo:
 
         self.number_heros_played = len(self.hero_record)
         self.total_games = number_of_match
-        self.total_avg_gpm = total_gpm / self.total_games
+        self.total_avg_gpm = round(total_gpm / self.total_games,2)
 
-        self.total_avg_gpm = total_gpm / self.total_games
-        self.total_win_rate = number_of_win *100 / self.total_games
+        #self.total_avg_gpm = total_gpm / self.total_games
+        self.total_win_rate = round(number_of_win *100 / self.total_games,2)
 
         if number_of_win == 0:
             self.total_avg_win_gpm = 0

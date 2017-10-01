@@ -18,7 +18,8 @@ def output_json_to_file(json_obj, file):
 
 if __name__ == "__main__":
     latest = ServerLogReader.get_lobby_members()
-
+    all = []
+    print(latest)
     index = 0
     for player in latest:
         print(player)
@@ -26,9 +27,14 @@ if __name__ == "__main__":
         medusa.process()
         medusa.output()
 
-        print(medusa.to_json())
+        #print(medusa.to_json())
+
+        all.append(medusa.to_json())
         output_json_to_file(medusa.to_json(),"D:/PycharmProjects/report/player"+str(index)+ ".json")
         index +=1
+
+        for one in all:
+            print (one)
 
     '''
     medusa = SteamMemberInfo.MemberInfo(444025333)
