@@ -200,6 +200,9 @@ class MemberInfo:
         self.total_avg_win_gpm = 0
         self.total_avg_lose_gpm = 0
         self.hero_record = []
+        self.last_24_hrs_win = 0
+        self.last_24_hrs_lose = 0
+        self.last_24_hrs_win_rate = 0
         self.crawl_60_days_history()
 
     def crawl_60_days_history(self):
@@ -213,7 +216,8 @@ class MemberInfo:
             if match['start_time'] >=time.time()-60*24*60*60 :
 
                 self.member_last_60_days_history.append(match)
-                pass
+
+
         print (self.member_last_60_days_history)
 
         print(len(self.member_last_60_days_history))
@@ -250,9 +254,13 @@ class MemberInfo:
             hero_playing = get_game_player_hero(match_id,self.member_id)
             game_gpm = get_game_player_gpm(match_id,self.member_id)
             if is_win:
+                if match['start_time'] >=time.time()-24*60*60 :
+                    self.last_24_hrs_win += 1
                 number_of_win = number_of_win+1
                 total_win_gpm = total_win_gpm + game_gpm
             else:
+                if match['start_time'] >=time.time()-24*60*60 :
+                    self.last_24_hrs_lose += 1
                 number_of_lose = number_of_lose+1
                 total_lose_gpm = total_lose_gpm + game_gpm
             #get total gpm for all heros
@@ -265,7 +273,8 @@ class MemberInfo:
 
             if fresh_hero:
                 self.hero_record.append(HeroRecord(hero_playing,is_win,game_gpm))
-
+        if (self.last_24_hrs_win+self.last_24_hrs_lose) > 0:
+            self.last_24_hrs_win_rate = round(self.last_24_hrs_win/(self.last_24_hrs_lose+self.last_24_hrs_win),2)
         #get overall statics for all heroes
 
         self.number_heros_played = len(self.hero_record)
@@ -306,6 +315,9 @@ class MemberInfo:
         print("total win rate: "+str(self.total_win_rate))
         print("total avg win gpm: "+str(self.total_avg_win_gpm))
         print("total avg lose gpm: "+str(self.total_avg_lose_gpm))
+        print("last 24 hrs win rate: " + str(self.last_24_hrs_win_rate))
+        print("last 24 hrs win : " + str(self.last_24_hrs_win))
+        print("last 24 hrs lose : " + str(self.last_24_hrs_lose))
         print("total number of heroes record collected:"+str(len(self.hero_record)))
 
         for hero in self.hero_record:
@@ -327,6 +339,9 @@ class MemberInfo:
         json_text['total_win_rate'] = self.total_win_rate
         json_text['total_avg_win_gpm'] = self.total_avg_win_gpm
         json_text['total_avg_lose_gpm'] = self.total_avg_lose_gpm
+        json_text['last_24_hrs_win_rate'] = self.last_24_hrs_win_rate
+        json_text['last_24_hrs_win'] = self.last_24_hrs_win
+        json_text['last_24_hrs_lose'] = self.last_24_hrs_lose
         json_text['total_number_of_heroes_record_collected'] = len(self.hero_record)
 
         objective_json = json.dumps(json_text)
