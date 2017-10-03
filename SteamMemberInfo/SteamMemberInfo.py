@@ -8,7 +8,7 @@ import os.path
 __steam_api_key__= None
 __game_data__ = None
 
-
+__heroes__ = None
 
 def get_member_game_history(user_dota2_id):
     api = dota2api.Initialise("4B1FD9D1888114755F2A9C7B5788A085")
@@ -26,11 +26,11 @@ def get_game_details(dota2_game_id):
         #__game_data__ =  api.get_match_details(match_id=dota2_game_id)
 
 
-        if Util.dota_is_match_exist(dota2_game_id):
-            __game_data__ = json.loads(Util.dota_get_match_details(dota2_game_id))
+        if Util.db_is_match_exist(dota2_game_id):
+            __game_data__ = json.loads(Util.db_get_match_details(dota2_game_id))
         else:
             __game_data__ = api.get_match_details(match_id=dota2_game_id)
-            Util.dota_insert_match_details(dota2_game_id,json.dumps(__game_data__))
+            Util.db_insert_match_details(dota2_game_id,json.dumps(__game_data__))
         return __game_data__
 '''
         game_file =  "D:/PycharmProjects/data/game/"+str(dota2_game_id)+".txt"
@@ -135,7 +135,7 @@ class HeroRecord:
     total_gpm_for_win = 0
     total_gpm_for_lose = 0'''
 
-    def __init__(self,hero_id,win,gpm):
+    def __init__(self,hero_id,win,gpm,is_last_24_hrs_match=False):
         self.hero_id = hero_id
         self.number_of_games = 0
         self.win_rate = 0
@@ -146,22 +146,34 @@ class HeroRecord:
         self.number_of_lose = 0
         self.total_gpm_for_win = 0
         self.total_gpm_for_lose = 0
-        self.update_with_game(win,gpm)
+        self.last_24_hrs_win = 0
+        self.last_24_hrs_lose = 0
+        self.last_24_hrs_win_rate = 50.00
+
+        self.update_with_game(win,gpm,is_last_24_hrs_match)
 
 
 
-    def update_with_game(self,win,gpm):
+    def update_with_game(self,win,gpm,is_last_24_hrs_match = False):
         self.number_of_games = self.number_of_games+1
 
         if win:
             self.number_of_win = self.number_of_win+1
             self.total_gpm_for_win = self.total_gpm_for_win + gpm
             self.gpm_for_win = round(self.total_gpm_for_win/self.number_of_win,2)
+
+            if is_last_24_hrs_match:
+                self.last_24_hrs_win +=1
+
         else:
             self.number_of_lose = self.number_of_lose+1
             self.total_gpm_for_lose = self.total_gpm_for_lose +gpm
             self.gpm_for_lose = round(self.total_gpm_for_lose / self.number_of_lose,2)
+            if is_last_24_hrs_match:
+                self.last_24_hrs_lose +=1
 
+        if (self.last_24_hrs_win+self.last_24_hrs_lose) > 0:
+            self.last_24_hrs_win_rate = round(self.last_24_hrs_win/(self.last_24_hrs_lose+self.last_24_hrs_win),2)
         self.win_rate = round((self.number_of_win / self.number_of_games) * 100, 2)
         pass
 
@@ -202,7 +214,7 @@ class MemberInfo:
         self.hero_record = []
         self.last_24_hrs_win = 0
         self.last_24_hrs_lose = 0
-        self.last_24_hrs_win_rate = 0
+        self.last_24_hrs_win_rate = 50.00
         self.crawl_60_days_history()
 
     def crawl_60_days_history(self):
@@ -253,13 +265,16 @@ class MemberInfo:
             is_win = is_game_player_win(match_id,self.member_id)
             hero_playing = get_game_player_hero(match_id,self.member_id)
             game_gpm = get_game_player_gpm(match_id,self.member_id)
+            is_last_24_hrs_match = False
+            if match['start_time'] >=time.time()-24*60*60 :
+                is_last_24_hrs_match = True
             if is_win:
-                if match['start_time'] >=time.time()-24*60*60 :
+                if is_last_24_hrs_match :
                     self.last_24_hrs_win += 1
                 number_of_win = number_of_win+1
                 total_win_gpm = total_win_gpm + game_gpm
             else:
-                if match['start_time'] >=time.time()-24*60*60 :
+                if is_last_24_hrs_match :
                     self.last_24_hrs_lose += 1
                 number_of_lose = number_of_lose+1
                 total_lose_gpm = total_lose_gpm + game_gpm
@@ -269,10 +284,10 @@ class MemberInfo:
             for hero in self.hero_record:
                 if hero.hero_id == hero_playing:
                     fresh_hero = False
-                    hero.update_with_game(is_win,game_gpm)
+                    hero.update_with_game(is_win,game_gpm,is_last_24_hrs_match)
 
             if fresh_hero:
-                self.hero_record.append(HeroRecord(hero_playing,is_win,game_gpm))
+                self.hero_record.append(HeroRecord(hero_playing,is_win,game_gpm,is_last_24_hrs_match))
         if (self.last_24_hrs_win+self.last_24_hrs_lose) > 0:
             self.last_24_hrs_win_rate = round(self.last_24_hrs_win/(self.last_24_hrs_lose+self.last_24_hrs_win),2)
         #get overall statics for all heroes
@@ -332,6 +347,10 @@ class MemberInfo:
     def to_json(self):
         json_text= {}
         json_text['account_id']= self.member_id
+        json_text['account_name'] = get_player_summary(self.member_id,"personaname")
+        json_text['account_avatar'] = get_player_summary(self.member_id,"avatar")
+        json_text['account_avatarmedium'] = get_player_summary(self.member_id,"avatarmedium")
+        json_text['account_avatarfull'] = get_player_summary(self.member_id,"avatarfull")
         json_text['total_games'] = self.total_games
         json_text['total_hero_played'] = self.number_heros_played
         json_text['total_hero_played'] = self.number_heros_played
@@ -344,7 +363,7 @@ class MemberInfo:
         json_text['last_24_hrs_lose'] = self.last_24_hrs_lose
         json_text['total_number_of_heroes_record_collected'] = len(self.hero_record)
 
-        objective_json = json.dumps(json_text)
+        objective_json = json_text
         if len(self.hero_record) == 0:
 
             return objective_json
@@ -355,16 +374,24 @@ class MemberInfo:
             for hero in self.hero_record:
                 hero_record = {}
                 hero_record['hero_id'] = hero.hero_id
+                hero_record['hero_name'] = get_hero_name(hero.hero_id)
+                hero_record['hero_full_image'] = get_hero_images(hero.hero_id,"url_full_portrait")
+                hero_record['hero_sb_image'] = get_hero_images(hero.hero_id)
+                hero_record['hero_lg_image'] = get_hero_images(hero.hero_id,"url_large_portrait")
+                hero_record['hero_vert_image'] = get_hero_images(hero.hero_id,"url_vertical_portrait")
                 hero_record['games_played'] = hero.number_of_games
                 hero_record['win_rate'] = hero.win_rate
                 hero_record['gpm_for_win'] = hero.gpm_for_win
                 hero_record['gpm_for_lose'] = hero.gpm_for_lose
+                hero_record['last_24_hrs_win_rate'] = hero.last_24_hrs_win_rate
+                hero_record['last_24_hrs_win'] = hero.last_24_hrs_win
+                hero_record['last_24_hrs_lose'] = hero.last_24_hrs_lose
                 index += 1
                 temp_obj.append(hero_record)
 
             json_text['hero_records'] = temp_obj
 
-            objective_json = json.dumps(json_text)
+            objective_json = json_text
 
 
             return objective_json
@@ -383,15 +410,54 @@ def init_steam_api_key(name):
     print(__steam_api_key__)
 
 
+def get_hero_name(hero_id):
+    global __heroes__
+    if not __heroes__ :
+
+        with open("D:/PycharmProjects/dota2LobbyInfo/data/res/heroes.json", 'r') as file:
+            content = file.read()
+            __heroes__ = json.loads(content)
+
+
+    for hero in __heroes__["heroes"]:
+        if hero["id"]==hero_id:
+            return hero["localized_name"]
+
+    pass
+def get_hero_images(hero_id,img_attr="url_small_portrait"):
+    global __heroes__
+    if not __heroes__ :
+
+        with open("D:/PycharmProjects/dota2LobbyInfo/data/res/heroes.json", 'r') as file:
+            content = file.read()
+            __heroes__ = json.loads(content)
+
+    for hero in __heroes__["heroes"]:
+        if hero["id"]==hero_id:
+            return hero[img_attr]
+
+def get_player_summary(dota2_id,attribute="personaname"):
+    api = dota2api.Initialise("4B1FD9D1888114755F2A9C7B5788A085")
+
+    response = api.get_player_summaries(dota2_id)
+
+    for item in response['players']:
+        return (item[attribute])
+
 
 
 if __name__ == "__main__":
     #medusa = MemberInfo(444025333)
+    get_player_summary(132044155)
+'''
     medusa = MemberInfo(132044155)
     print(medusa.member_id)
 
     medusa.process()
     medusa.output()
+    print(medusa.to_json())
+
+    print(get_hero_images(1,"url_large_portrait"))
 
     #get_game_details(3463314239)
     #print(os.getcwd())
@@ -403,6 +469,7 @@ if __name__ == "__main__":
     #for obj in objs:
     #    obj.output()
 
-    pass
+    pass'''
+
 
 

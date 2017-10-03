@@ -11,7 +11,7 @@ def connect():
         conn = sqlite3.connect('D:/PycharmProjects/dota2LobbyInfo/data/game/game.db')
 
     return conn
-def dota_insert_match_details(match_id,match_details,is_processed=False):
+def db_insert_match_details(match_id,match_details,is_processed=False):
     global conn,cursor
 
     if conn == None or cursor ==None:
@@ -25,7 +25,7 @@ def dota_insert_match_details(match_id,match_details,is_processed=False):
 
 
 
-def dota_is_match_exist(match_id):
+def db_is_match_exist(match_id):
     global conn,cursor
 
     if conn == None or cursor ==None:
@@ -43,7 +43,7 @@ def dota_is_match_exist(match_id):
 
         return False
 
-def dota_get_match_details(match_id):
+def db_get_match_details(match_id):
     global conn,cursor
 
     if conn == None or cursor ==None:
@@ -63,4 +63,4 @@ if __name__ == "__main__":
 
     #dota_insert_match_details(123,'123')
     #dota_is_match_exist(123)
-    dota_get_match_details(123)
+    db_get_match_details(123)
