@@ -1,22 +1,18 @@
 import sqlite3
-
-
+import threading,time
 conn = None
 
 
 
 def connect():
-    global conn
-    if conn == None:
-        conn = sqlite3.connect('D:/PycharmProjects/dota2LobbyInfo/data/game/game.db')
 
-    return conn
-def dota_insert_match_details(match_id,match_details,is_processed=False):
-    global conn,cursor
+    connection = sqlite3.connect('D:/PycharmProjects/dota2LobbyInfo/data/game/game.db')
 
-    if conn == None or cursor ==None:
-        conn = connect()
-        cursor = conn.cursor()
+    return connection
+def db_insert_match_details(match_id,match_details,is_processed=False):
+
+    conn = connect()
+    cursor = conn.cursor()
 
 
     statement = 'insert into steam_match_details (match_id,match_details) values (?,?)'
@@ -25,42 +21,44 @@ def dota_insert_match_details(match_id,match_details,is_processed=False):
 
 
 
-def dota_is_match_exist(match_id):
-    global conn,cursor
+def db_is_match_exist(match_id):
 
-    if conn == None or cursor ==None:
-        conn = connect()
-        cursor = conn.cursor()
+    conn = connect()
+    cursor = conn.cursor()
 
     statement = 'select * from steam_match_details where match_id='+str(match_id)
 
     cursor.execute(statement)
 
     if len(cursor.fetchall()) == 1:
-
+        conn.close()
+        conn = None
         return True
     else:
-
+        conn.close()
+        conn = None
         return False
 
-def dota_get_match_details(match_id):
-    global conn,cursor
+def db_get_match_details(match_id):
 
-    if conn == None or cursor ==None:
-        conn = connect()
-        cursor = conn.cursor()
+    conn = connect()
+    cursor = conn.cursor()
 
     statement = 'select match_details from steam_match_details where match_id='+str(match_id)
 
     cursor.execute(statement)
 
     row = cursor.fetchone()
+    conn.close()
+    conn = None
     return row[0]
-
 
 
 if __name__ == "__main__":
 
+    threading._start_new_thread(print_out,("test123",))
+
+
     #dota_insert_match_details(123,'123')
     #dota_is_match_exist(123)
-    dota_get_match_details(123)
+    #dota_get_match_details(123)
