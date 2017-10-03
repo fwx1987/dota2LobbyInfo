@@ -447,7 +447,7 @@ if __name__ == "__main__":
 
     medusa.process()
     medusa.output()
-    print(medusa.to_json())
+print(medusa.to_json())
 '''    get_player_summary(132044155)
     medusa = MemberInfo(132044155)
     print(medusa.member_id)
@@ -461,4 +461,8 @@ if __name__ == "__main__":
     #objs = sorted(objs,key=attrgetter('number_of_games'),reverse=True)
     #for obj in objs:
     #    obj.output()
-    pass'''
+
+    pass
+
+
+'''

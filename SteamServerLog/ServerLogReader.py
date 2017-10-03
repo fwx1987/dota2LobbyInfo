@@ -54,22 +54,22 @@ class LatestLobby:
 
 
 def get_lobby_members():
-    f = open('C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log.txt', 'r')
-    #f = open('D:\Files\PersonalFolders\Dota2\server_log.txt', 'r')
+    #f = open('C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log.txt', 'r')
+    f = open('D:\Files\PersonalFolders\Dota2\server_log.txt', 'r')
     lastline = ""
     for line in f:
         if "Lobby" in line:
             lastline = line
     last = LatestLobby(lastline)
 
-    print(last.output_raw())
-    print(last.get_lobby_members())
+
     return last.get_lobby_members()
 
 if __name__ == "__main__":
-    t=[]
-    y=[]
     t = get_lobby_members()
-    y = get_lobby_members()
 
-    print (t==y)
+    player_slot=0
+
+    for member in t:
+        pass
+
