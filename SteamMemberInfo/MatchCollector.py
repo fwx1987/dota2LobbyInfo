@@ -31,7 +31,7 @@ def collect_match_details(threadname,start_sequence_num,end_sequence_num):
                 break
 
         except Exception as e:
-            print(str(e))
+            print("thread:"+str(threadname) +" " +str(e))
             pass
             #with open("seq_num", 'a') as file:
             #    file.write("start at:" + str(start_sequence_num) + " and ends at: " + str(seq_num))
@@ -59,15 +59,28 @@ class collectorThread (threading.Thread):
 if __name__ == "__main__":
     '''    collect_match_details("test",2945965711,2945966711)  '''
 
-    thread1 = collectorThread(1,"thread1",2945968871,2945968871)
-    thread2 = collectorThread(2, "thread2", 2945968871, 2945968871)
+    seq = 2945970601
+
+    increase = 500
+
+    thread1 = collectorThread(1,"thread-1",seq,seq+increase)
+    seq = seq+increase
+    thread2 = collectorThread(2, "thread-2", seq,seq+increase)
+
+
     print("start time is "+str(time.time()))
     thread1.start()
     thread2.start()
+
+
+
     thread1.join()
     thread2.join()
+
     print("end time is " + str(time.time()))
     pass
+    
+
 
 
 
