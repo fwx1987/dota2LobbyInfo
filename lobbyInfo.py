@@ -38,6 +38,7 @@ def process_player_json(json_obj):
     player_text['last_24_hrs_win'] = json_obj['last_24_hrs_win']
     player_text['last_24_hrs_lose'] = json_obj['last_24_hrs_lose']
     player_text['total_hero_played'] = json_obj['total_hero_played']
+    player_text['win_history'] = json_obj['win_history']
 
     hero_text['player_slot'] = "hero_"+str(json_obj['player_slot'])
     hero_text['account_name'] = json_obj['account_name']
@@ -89,6 +90,7 @@ def process_player_json(json_obj):
                 hero_text['last_24_hrs_win'] = hero['last_24_hrs_win']
                 hero_text['last_24_hrs_lose'] = hero['last_24_hrs_lose']
                 hero_text['total_hero_played'] = "NA"
+                hero_text['win_history'] = hero['hero_win_history']
                 all.append(hero_text)
 
 
@@ -106,6 +108,7 @@ def process_player_json(json_obj):
                 hero_text['last_24_hrs_win'] = hero['last_24_hrs_win']
                 hero_text['last_24_hrs_lose'] = hero['last_24_hrs_lose']
                 hero_text['total_hero_played'] = "NA"
+                hero_text['win_history'] = hero['hero_win_history']
                 all.append(hero_text)
 
 

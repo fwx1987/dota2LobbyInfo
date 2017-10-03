@@ -149,6 +149,7 @@ class HeroRecord:
         self.last_24_hrs_win = 0
         self.last_24_hrs_lose = 0
         self.last_24_hrs_win_rate = 50.00
+        self.hero_win_history = []
 
         self.update_with_game(win,gpm,is_last_24_hrs_match)
 
@@ -164,14 +165,14 @@ class HeroRecord:
 
             if is_last_24_hrs_match:
                 self.last_24_hrs_win +=1
-
+            self.hero_win_history.append(1)
         else:
             self.number_of_lose = self.number_of_lose+1
             self.total_gpm_for_lose = self.total_gpm_for_lose +gpm
             self.gpm_for_lose = round(self.total_gpm_for_lose / self.number_of_lose,2)
             if is_last_24_hrs_match:
                 self.last_24_hrs_lose +=1
-
+            self.hero_win_history.append(-1)
         if (self.last_24_hrs_win+self.last_24_hrs_lose) > 0:
             self.last_24_hrs_win_rate = round(self.last_24_hrs_win/(self.last_24_hrs_lose+self.last_24_hrs_win),2)
         self.win_rate = round((self.number_of_win / self.number_of_games) * 100, 2)
@@ -215,6 +216,7 @@ class MemberInfo:
         self.last_24_hrs_win = 0
         self.last_24_hrs_lose = 0
         self.last_24_hrs_win_rate = 50.00
+        self.win_history = []
         self.crawl_60_days_history()
 
     def crawl_60_days_history(self):
@@ -250,10 +252,6 @@ class MemberInfo:
         if self.member_last_60_days_history ==None:
             return
         number_of_match = len(self.member_last_60_days_history)
-        if number_of_match ==800:
-            print("self.raw:="+self.member_raw_history)
-            print("self.raw:=" + self.member_last_60_days_history)
-            #raise ValueError('things need to take note raw 60:'+ self.member_last_60_days_history +'/n'+'things need to take note raw:' + self.member_raw_history )
 
         if number_of_match==0:
             return
@@ -273,11 +271,13 @@ class MemberInfo:
                     self.last_24_hrs_win += 1
                 number_of_win = number_of_win+1
                 total_win_gpm = total_win_gpm + game_gpm
+                self.win_history.append(1)
             else:
                 if is_last_24_hrs_match :
                     self.last_24_hrs_lose += 1
                 number_of_lose = number_of_lose+1
                 total_lose_gpm = total_lose_gpm + game_gpm
+                self.win_history.append(-1)
             #get total gpm for all heros
             total_gpm = total_gpm + game_gpm
 
@@ -362,7 +362,8 @@ class MemberInfo:
         json_text['last_24_hrs_win'] = self.last_24_hrs_win
         json_text['last_24_hrs_lose'] = self.last_24_hrs_lose
         json_text['total_number_of_heroes_record_collected'] = len(self.hero_record)
-
+        self.win_history.reverse()
+        json_text['win_history'] = self.win_history[-10:]
         objective_json = json_text
         if len(self.hero_record) == 0:
 
@@ -386,6 +387,8 @@ class MemberInfo:
                 hero_record['last_24_hrs_win_rate'] = hero.last_24_hrs_win_rate
                 hero_record['last_24_hrs_win'] = hero.last_24_hrs_win
                 hero_record['last_24_hrs_lose'] = hero.last_24_hrs_lose
+                hero.hero_win_history.reverse()
+                hero_record['hero_win_history'] = hero.hero_win_history[-5:]
                 index += 1
                 temp_obj.append(hero_record)
 
@@ -448,8 +451,14 @@ def get_player_summary(dota2_id,attribute="personaname"):
 
 if __name__ == "__main__":
     #medusa = MemberInfo(444025333)
-    get_player_summary(132044155)
-'''
+    medusa = MemberInfo(132044155)
+    print(medusa.member_id)
+
+    medusa.process()
+    medusa.output()
+    print(medusa.to_json())
+'''    get_player_summary(132044155)
+
     medusa = MemberInfo(132044155)
     print(medusa.member_id)
 
