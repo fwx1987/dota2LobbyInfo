@@ -388,7 +388,7 @@ def init_steam_api_key(name):
 if __name__ == "__main__":
     #medusa = MemberInfo(444025333)
     medusa = MemberInfo(132044155)
-    print(medusa.member_id)
+
 
     medusa.process()
     medusa.output()
