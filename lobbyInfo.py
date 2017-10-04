@@ -6,6 +6,9 @@ from SteamMemberInfo import SteamMemberInfo
 import os,json
 import fileinput
 from shutil import copyfile
+import time
+
+import webbrowser
 
 def output_json_to_file(json_obj, file):
 
@@ -18,6 +21,7 @@ def output_json_to_file(json_obj, file):
         file.write(json.dumps(json_obj))
 
     pass
+
 
 def process_player_json(json_obj):
 
@@ -119,7 +123,9 @@ def process_player_json(json_obj):
 
 
             index+=1
-
+        if index==0:
+            all.append(player_text)
+            return all
     return all
 
 
@@ -135,13 +141,12 @@ def process_player_json(json_obj):
 
     pass
 
-if __name__ == "__main__":
-    latest = ServerLogReader.get_lobby_members()
+def generate_html_report(player_list):
     radiant = []
     dire = []
-    print(latest)
+
     index = 0
-    for player in latest:
+    for player in player_list:
         print(player)
         member = SteamMemberInfo.MemberInfo(int(player))
         member.process()
@@ -162,14 +167,7 @@ if __name__ == "__main__":
                 radiant.append(item)
             else:
                 dire.append(item)
-
-
-
-        #output_json_to_file(medusa.to_json(),"D:/PycharmProjects/report/player"+str(index)+ ".json")
         index +=1
-
-    print(radiant)
-    #output_json_to_file(all,"D:/PycharmProjects/dota2LobbyInfo/report/players.json")
 
     if os.path.exists("D:/PycharmProjects/dota2LobbyInfo/report/report.html"):
         print("file exist, deleting:" )
@@ -178,12 +176,46 @@ if __name__ == "__main__":
     copyfile("D:/PycharmProjects/dota2LobbyInfo/report/report - template.html","D:/PycharmProjects/dota2LobbyInfo/report/report.html")
     with fileinput.FileInput("D:/PycharmProjects/dota2LobbyInfo/report/report.html", inplace=True, backup='.bak') as file:
         for line in file:
-            print(line.replace("var tabledata = @@", "var tabledata ="+json.dumps(radiant)+";"), end='')
+            print(line.replace("var radianttabledata = @@", "var radianttabledata ="+json.dumps(radiant)+";"), end='')
+    with fileinput.FileInput("D:/PycharmProjects/dota2LobbyInfo/report/report.html", inplace=True, backup='.bak') as file:
+        for line in file:
+            print(line.replace("var diretabledata = @@", "var diretabledata ="+json.dumps(dire)+";"), end='')
+
+if __name__ == "__main__":
 
 
-    '''
-    medusa = SteamMemberInfo.MemberInfo(444025333)
-    medusa.process()
-    medusa.output()
-    print(medusa.to_json())
-    '''
+
+
+    latest = ServerLogReader.get_lobby_members()
+    newcoming =latest
+
+    print(latest==newcoming)
+    times = 1
+
+    start_time = time.time()
+
+    while(time.time()-start_time)<8*60*60:
+
+        if (latest!=newcoming):
+            generate_html_report(newcoming)
+            print('generate report done')
+
+            latest = newcoming
+
+            url = "D:/PycharmProjects/dota2LobbyInfo/report/report.html"
+            webbrowser.open(url,new=0)
+        else:
+            print("start to sleep 5 seconds")
+            time.sleep(5)
+            times +=1
+            newcoming = ServerLogReader.get_lobby_members()
+
+
+
+
+
+
+
+
+
+

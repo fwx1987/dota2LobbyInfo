@@ -181,7 +181,7 @@ class HeroRecord:
 
 class MemberInfo:
     #repostiory data
-    member_id = ""
+    ''' member_id = ""
     member_raw_history = ""
     member_last_60_days_history =[]
 
@@ -194,7 +194,7 @@ class MemberInfo:
     total_avg_lose_gpm = 0
 
     #specific hero data
-    hero_record = []
+    hero_record = [] '''
 
     def __init__(self,member_id):
         self.member_id = member_id
@@ -364,10 +364,17 @@ class MemberInfo:
         self.gpm_history.reverse()
 
         if len(self.gpm_history)>5:
+            self.gpm_history.append(100)
+            self.gpm_history.append(200)
             self.gpm_history.append(300)
+            self.gpm_history.append(400)
+            self.gpm_history.append(500)
+            self.gpm_history.append(600)
+            self.gpm_history.append(700)
+            self.gpm_history.append(800)
             self.gpm_history.append(900)
 
-        json_text['gpm_history'] = self.gpm_history[-12:]
+        json_text['gpm_history'] = self.gpm_history[-19:]
         objective_json = json_text
         if len(self.hero_record) == 0:
 
@@ -377,7 +384,7 @@ class MemberInfo:
             index = 0
             temp_obj = []
             for hero in self.hero_record:
-                if hero.number_of_games>=5:
+                if index ==0 or hero.number_of_games>=5:
                     hero_record = {}
                     hero_record['hero_id'] = hero.hero_id
                     hero_record['hero_name'] = get_hero_name(hero.hero_id)
@@ -398,9 +405,16 @@ class MemberInfo:
                     hero_record['hero_win_history'] = hero.hero_win_history[-5:]
                     hero.hero_gpm_history.reverse()
                     if len(hero.hero_gpm_history)>=5:
+                        hero.hero_gpm_history.append(100)
+                        hero.hero_gpm_history.append(200)
                         hero.hero_gpm_history.append(300)
+                        hero.hero_gpm_history.append(400)
+                        hero.hero_gpm_history.append(500)
+                        hero.hero_gpm_history.append(600)
+                        hero.hero_gpm_history.append(700)
+                        hero.hero_gpm_history.append(800)
                         hero.hero_gpm_history.append(900)
-                    hero_record['hero_gpm_history'] = hero.hero_gpm_history[-7:]
+                    hero_record['hero_gpm_history'] = hero.hero_gpm_history[-14:]
                     index += 1
                     temp_obj.append(hero_record)
 
@@ -463,7 +477,7 @@ def get_player_summary(dota2_id,attribute="personaname"):
 
 if __name__ == "__main__":
     #medusa = MemberInfo(444025333)
-    medusa = MemberInfo(132044155)
+    medusa = MemberInfo(103894986)
     print(medusa.member_id)
 
     medusa.process()
