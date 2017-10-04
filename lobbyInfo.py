@@ -39,6 +39,7 @@ def process_player_json(json_obj):
     player_text['last_24_hrs_lose'] = json_obj['last_24_hrs_lose']
     player_text['total_hero_played'] = json_obj['total_hero_played']
     player_text['win_history'] = json_obj['win_history']
+    player_text['gpm_history'] = json_obj['gpm_history']
 
     hero_text['player_slot'] = "hero_"+str(json_obj['player_slot'])
     hero_text['account_name'] = json_obj['account_name']
@@ -74,6 +75,7 @@ def process_player_json(json_obj):
                 player_text['hero_last_24_hrs_win_rate'] = hero['last_24_hrs_win_rate']
                 player_text['hero_last_24_hrs_win'] = hero['last_24_hrs_win']
                 player_text['hero_last_24_hrs_lose'] = hero['last_24_hrs_lose']
+                player_text['hero_win_history'] = hero['hero_win_history']
                 all.append(player_text)
 
                 #first hero record
@@ -82,7 +84,7 @@ def process_player_json(json_obj):
                 hero_text['account_avatar'] = hero['hero_sb_image']
                 hero_text['total_games'] = hero['games_played']
                 hero_text['total_hero_played'] = "NA"
-                hero_text['total_avg_gpm'] = 0
+                hero_text['total_avg_gpm'] = hero['total_avg_gpm']
                 hero_text['total_win_rate'] = hero['win_rate']
                 hero_text['total_avg_win_gpm'] = hero['gpm_for_win']
                 hero_text['total_avg_lose_gpm'] = hero['gpm_for_lose']
@@ -91,6 +93,8 @@ def process_player_json(json_obj):
                 hero_text['last_24_hrs_lose'] = hero['last_24_hrs_lose']
                 hero_text['total_hero_played'] = "NA"
                 hero_text['win_history'] = hero['hero_win_history']
+                hero_text['win_history'] =  hero['hero_win_history']
+                hero_text['gpm_history'] = hero['hero_gpm_history']
                 all.append(hero_text)
 
 
@@ -99,6 +103,7 @@ def process_player_json(json_obj):
                 hero_text['account_name'] = hero['hero_name']
                 hero_text['account_avatar'] = hero['hero_sb_image']
                 hero_text['total_games'] = hero['games_played']
+                hero_text['total_avg_gpm'] = hero['total_avg_gpm']
                 hero_text['total_hero_played'] = "NA"
                 hero_text['total_avg_gpm'] = 0
                 hero_text['total_win_rate'] = hero['win_rate']
@@ -109,6 +114,7 @@ def process_player_json(json_obj):
                 hero_text['last_24_hrs_lose'] = hero['last_24_hrs_lose']
                 hero_text['total_hero_played'] = "NA"
                 hero_text['win_history'] = hero['hero_win_history']
+                hero_text['gpm_history'] = hero['hero_gpm_history']
                 all.append(hero_text)
 
 
@@ -131,7 +137,8 @@ def process_player_json(json_obj):
 
 if __name__ == "__main__":
     latest = ServerLogReader.get_lobby_members()
-    all = []
+    radiant = []
+    dire = []
     print(latest)
     index = 0
     for player in latest:
@@ -149,16 +156,19 @@ if __name__ == "__main__":
         player_json = process_player_json(player_json)
         print("after processing:")
         print(player_json)
-        if all==[]:
-            all = player_json
-        else:
-            for item in player_json:
-                all.append(item)
+
+        for item in player_json:
+            if index<=4:
+                radiant.append(item)
+            else:
+                dire.append(item)
+
+
 
         #output_json_to_file(medusa.to_json(),"D:/PycharmProjects/report/player"+str(index)+ ".json")
         index +=1
 
-    print(all)
+    print(radiant)
     #output_json_to_file(all,"D:/PycharmProjects/dota2LobbyInfo/report/players.json")
 
     if os.path.exists("D:/PycharmProjects/dota2LobbyInfo/report/report.html"):
@@ -168,7 +178,7 @@ if __name__ == "__main__":
     copyfile("D:/PycharmProjects/dota2LobbyInfo/report/report - template.html","D:/PycharmProjects/dota2LobbyInfo/report/report.html")
     with fileinput.FileInput("D:/PycharmProjects/dota2LobbyInfo/report/report.html", inplace=True, backup='.bak') as file:
         for line in file:
-            print(line.replace("var tabledata = @@", "var tabledata ="+json.dumps(all)+";"), end='')
+            print(line.replace("var tabledata = @@", "var tabledata ="+json.dumps(radiant)+";"), end='')
 
 
     '''

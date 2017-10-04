@@ -137,10 +137,12 @@ class HeroRecord:
         self.number_of_lose = 0
         self.total_gpm_for_win = 0
         self.total_gpm_for_lose = 0
+        self.total_avg_gpm = 0
         self.last_24_hrs_win = 0
         self.last_24_hrs_lose = 0
         self.last_24_hrs_win_rate = 50.00
         self.hero_win_history = []
+        self.hero_gpm_history =[]
 
         self.update_with_game(win,gpm,is_last_24_hrs_match)
 
@@ -166,14 +168,17 @@ class HeroRecord:
             self.hero_win_history.append(-1)
         if (self.last_24_hrs_win+self.last_24_hrs_lose) > 0:
             self.last_24_hrs_win_rate = round(self.last_24_hrs_win/(self.last_24_hrs_lose+self.last_24_hrs_win),2)
+        self.hero_gpm_history.append(gpm)
+        self.total_avg_gpm = round((self.total_gpm_for_lose+self.total_gpm_for_win)/(self.number_of_games),2)
+
         self.win_rate = round((self.number_of_win / self.number_of_games) * 100, 2)
-        pass
 
 
     def output(self):
         print("hero id: "+str(self.hero_id))
         print("number of games: "+str(self.number_of_games))
         pass
+
 class MemberInfo:
     #repostiory data
     member_id = ""
@@ -185,7 +190,6 @@ class MemberInfo:
     total_games = 0
     total_avg_gpm = 0
     total_win_rate = 0
-    total_avg_gpm = 0
     total_avg_win_gpm =0
     total_avg_lose_gpm = 0
 
@@ -208,6 +212,7 @@ class MemberInfo:
         self.last_24_hrs_lose = 0
         self.last_24_hrs_win_rate = 50.00
         self.win_history = []
+        self.gpm_history = []
         self.crawl_60_days_history()
 
     def crawl_60_days_history(self):
@@ -254,6 +259,7 @@ class MemberInfo:
             is_win = is_game_player_win(match_id,self.member_id)
             hero_playing = get_game_player_hero(match_id,self.member_id)
             game_gpm = get_game_player_gpm(match_id,self.member_id)
+            self.gpm_history.append(game_gpm)
             is_last_24_hrs_match = False
             if match['start_time'] >=time.time()-24*60*60 :
                 is_last_24_hrs_match = True
@@ -355,6 +361,13 @@ class MemberInfo:
         json_text['total_number_of_heroes_record_collected'] = len(self.hero_record)
         self.win_history.reverse()
         json_text['win_history'] = self.win_history[-10:]
+        self.gpm_history.reverse()
+
+        if len(self.gpm_history)>5:
+            self.gpm_history.append(300)
+            self.gpm_history.append(900)
+
+        json_text['gpm_history'] = self.gpm_history[-12:]
         objective_json = json_text
         if len(self.hero_record) == 0:
 
@@ -364,24 +377,32 @@ class MemberInfo:
             index = 0
             temp_obj = []
             for hero in self.hero_record:
-                hero_record = {}
-                hero_record['hero_id'] = hero.hero_id
-                hero_record['hero_name'] = get_hero_name(hero.hero_id)
-                hero_record['hero_full_image'] = get_hero_images(hero.hero_id,"url_full_portrait")
-                hero_record['hero_sb_image'] = get_hero_images(hero.hero_id)
-                hero_record['hero_lg_image'] = get_hero_images(hero.hero_id,"url_large_portrait")
-                hero_record['hero_vert_image'] = get_hero_images(hero.hero_id,"url_vertical_portrait")
-                hero_record['games_played'] = hero.number_of_games
-                hero_record['win_rate'] = hero.win_rate
-                hero_record['gpm_for_win'] = hero.gpm_for_win
-                hero_record['gpm_for_lose'] = hero.gpm_for_lose
-                hero_record['last_24_hrs_win_rate'] = hero.last_24_hrs_win_rate
-                hero_record['last_24_hrs_win'] = hero.last_24_hrs_win
-                hero_record['last_24_hrs_lose'] = hero.last_24_hrs_lose
-                hero.hero_win_history.reverse()
-                hero_record['hero_win_history'] = hero.hero_win_history[-5:]
-                index += 1
-                temp_obj.append(hero_record)
+                if hero.number_of_games>=5:
+                    hero_record = {}
+                    hero_record['hero_id'] = hero.hero_id
+                    hero_record['hero_name'] = get_hero_name(hero.hero_id)
+                    hero_record['hero_full_image'] = get_hero_images(hero.hero_id,"url_full_portrait")
+                    hero_record['hero_sb_image'] = get_hero_images(hero.hero_id)
+                    hero_record['hero_lg_image'] = get_hero_images(hero.hero_id,"url_large_portrait")
+                    hero_record['hero_vert_image'] = get_hero_images(hero.hero_id,"url_vertical_portrait")
+                    hero_record['games_played'] = hero.number_of_games
+                    hero_record['win_rate'] = hero.win_rate
+                    hero_record['total_avg_gpm'] = hero.total_avg_gpm
+                    hero_record['gpm_for_win'] = hero.gpm_for_win
+                    hero_record['gpm_for_lose'] = hero.gpm_for_lose
+                    hero_record['last_24_hrs_win_rate'] = hero.last_24_hrs_win_rate
+                    hero_record['last_24_hrs_win'] = hero.last_24_hrs_win
+                    hero_record['last_24_hrs_lose'] = hero.last_24_hrs_lose
+
+                    hero.hero_win_history.reverse()
+                    hero_record['hero_win_history'] = hero.hero_win_history[-5:]
+                    hero.hero_gpm_history.reverse()
+                    if len(hero.hero_gpm_history)>=5:
+                        hero.hero_gpm_history.append(300)
+                        hero.hero_gpm_history.append(900)
+                    hero_record['hero_gpm_history'] = hero.hero_gpm_history[-7:]
+                    index += 1
+                    temp_obj.append(hero_record)
 
             json_text['hero_records'] = temp_obj
 
