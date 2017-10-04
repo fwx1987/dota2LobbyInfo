@@ -1,4 +1,3 @@
-
 import dota2api
 import json,time,os
 from operator import itemgetter,attrgetter
@@ -184,7 +183,6 @@ class MemberInfo:
     ''' member_id = ""
     member_raw_history = ""
     member_last_60_days_history =[]
-
     #all hero date
     number_heros_played = 0
     total_games = 0
@@ -192,7 +190,6 @@ class MemberInfo:
     total_win_rate = 0
     total_avg_win_gpm =0
     total_avg_lose_gpm = 0
-
     #specific hero data
     hero_record = [] '''
 
@@ -223,7 +220,7 @@ class MemberInfo:
             pass
         temp_list = self.member_raw_history['matches']
         for match in temp_list:
-            if match['start_time'] >=time.time()-60*24*60*60 :
+            if match['start_time'] >=time.time()-30*24*60*60 :
 
                 self.member_last_60_days_history.append(match)
 
@@ -477,7 +474,7 @@ def get_player_summary(dota2_id,attribute="personaname"):
 
 if __name__ == "__main__":
     #medusa = MemberInfo(444025333)
-    medusa = MemberInfo(103894986)
+    medusa = MemberInfo(132044155)
     print(medusa.member_id)
 
     medusa.process()
@@ -496,8 +493,5 @@ if __name__ == "__main__":
     #objs = sorted(objs,key=attrgetter('number_of_games'),reverse=True)
     #for obj in objs:
     #    obj.output()
-
     pass
-
-
 '''

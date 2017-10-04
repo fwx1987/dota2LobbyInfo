@@ -160,7 +160,7 @@ $("#radiant-table").tabulator({
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
 					}
 				}},
-			{title:"Player/Hero", width:100,field:"account_name"},
+			{title:"Player/Hero", width:125,field:"account_name"},
 			{title:"Games", field:"total_games"},
 			{title:"Match History", field:"win_history",width:160, formatter:tristateFormatter},
 			
@@ -285,7 +285,7 @@ $("#dire-table").tabulator({
 					}
 				}},
 				
-			{field:"account_avatar",width:68,formatter:function(cell, formatterParams){
+			{field:"account_avatar",width:125,formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
 					if(value.indexOf("heroes/") >=0){
 						return "<img src='"+value + "' style=\"height:33,width=59,background-size: cover;\"/>";

@@ -193,7 +193,7 @@ if __name__ == "__main__":
     times = 1
 
     start_time = time.time()
-
+    latest = []
     while(time.time()-start_time)<8*60*60:
 
         if (latest!=newcoming):

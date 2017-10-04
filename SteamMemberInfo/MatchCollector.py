@@ -57,7 +57,7 @@ class collectorThread (threading.Thread):
 
 
 if __name__ == "__main__":
-    '''    collect_match_details("test",2945965711,2945966711)  '''
+    '''    collect_match_details("test",2945965711,2945966711) 
 
     seq = 2945970601
 
@@ -79,7 +79,9 @@ if __name__ == "__main__":
     pass
     
 
+ '''
 
-
+    api = dota2api.Initialise("4B1FD9D1888114755F2A9C7B5788A085")
+    api.get_match_history_by_seq_num()
 
 
