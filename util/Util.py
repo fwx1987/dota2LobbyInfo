@@ -1,7 +1,5 @@
 import sqlite3
-import threading,time
 
-import requests
 conn = None
 __recent_match__ = None
 __player_summary__ = None
@@ -56,11 +54,7 @@ def db_get_match_details(match_id):
     return row[0]
 
 
-def odota_get_recent_match(account_id):
-    global __recent_match__
-    r = requests.get("https://api.opendota.com/api/players/"+account_id+"/recentMatches")
-    __recent_match__ = r.json()
-    return __recent_match__
+
 
 
 def odota_get_win_history(account_id):
@@ -74,8 +68,7 @@ class Dota2Dict(dict):
 
 
 if __name__ == "__main__":
-    r = requests.get("https://api.opendota.com/api/players/132044155/recentMatches")
-    print(r.json())
+    pass
 
 
     #dota_insert_match_details(123,'123')

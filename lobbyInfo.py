@@ -147,7 +147,7 @@ def generate_html_report(player_list):
 
     index = 0
     for player in player_list:
-        print(player)
+        
         member = SteamMemberInfo.MemberInfo(int(player))
         member.process()
         member.output()

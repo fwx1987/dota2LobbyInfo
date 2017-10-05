@@ -14,11 +14,28 @@ gpm_history
 total_avg_win_gpm
 total_avg_lose_gpm
 
-https://api.opendota.com/api/players/{account_id}
-account_avatar
-account_name
-total_games
+https://api.opendota.com/api/players/132044155
+
+solo_competitive_rank
+"mmr_estimate":{"estimate":4292},
+personaname
+avatar
+competitive_rank
+
 {"tracked_until": "string","solo_competitive_rank": "string","competitive_rank": "string","mmr_estimate": {"estimate": 0,"stdDev": 0,"n": 0},"profile": {"account_id": 0,"personaname": "string","name": "string","cheese": 0,"steamid": "string","avatar": "string","avatarmedium": "string","avatarfull": "string","profileurl": "string","last_login": "string","loccountrycode": "string"}}
 
-https://api.opendota.com/api/players/132044155/heroes?limit=100&date=30
-heroes
+https://api.opendota.com/api/players/132044155/heroes?limit=50
+[{"hero_id":"14","last_played":1506833096,"games":10,"win":6,"with_games":12,"with_win":7,"against_games":5,"against_win":3},
+
+
+https://api.opendota.com/api/players/132044155/matches?limit=50
+
+columns:
+SN  (image) Name(personaname) games, solo_competitive_rank, competitive_rank, mmr_estimate,  match_history_win(array),gpm_history
+
+1.https://api.opendota.com/api/players/132044155/refresh
+2.https://api.opendota.com/api/players/132044155/
+3.https://api.opendota.com/api/players/132044155/recentMatches
+
+match_details: img, period, win,KDA (K/D/A), hyperlink
+

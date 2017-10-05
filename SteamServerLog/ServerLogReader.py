@@ -54,8 +54,8 @@ class LatestLobby:
 
 
 def get_lobby_members():
-    f = open('C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log.txt', 'r')
-    #f = open('D:\Files\PersonalFolders\Dota2\server_log.txt', 'r')
+    #f = open('C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log.txt', 'r')
+    f = open('D:\Files\PersonalFolders\Dota2\server_log.txt', 'r')
     lastline = ""
     for line in f:
         if "Lobby" in line:
