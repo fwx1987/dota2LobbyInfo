@@ -10,8 +10,10 @@ def odota_get_recent_match(account_id):
     if __player_refreshed__ != account_id:
         odota_refresh_player(account_id)
 
-    if __player_data__ == None or __player_data__['profile']['account_id'] != account_id:
-        odota_get_player(account_id)
+
+
+
+    odota_get_player(account_id)
 
 
     r = requests.get("https://api.opendota.com/api/players/"+str(account_id)+"/recentMatches")
@@ -89,11 +91,25 @@ class Player:
     def process_odota_data(self):
 
         #player info
-        self.name = self.player_data['profile']['personaname']
-        self.avatar = self.player_data['profile']['avatar']
+        try:
+            self.name = self.player_data['profile']['personaname']
+        except KeyError as e:
+            pass
+
+        try:
+            self.avatar = self.player_data['profile']['avatar']
+
+        except KeyError as e:
+            pass
         self.solo_mmr = self.player_data['solo_competitive_rank']
         self.group_mmr = self.player_data['competitive_rank']
-        self.mmr_estimate = self.player_data['mmr_estimate']['estimate']
+
+        try:
+
+            self.mmr_estimate = self.player_data['mmr_estimate']['estimate']
+        except Exception:
+            self.mmr_estimate = 0
+
         self.recent_match = []
         self.gpm_hisotry = []
         self.matches_win_history = []
