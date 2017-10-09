@@ -21,7 +21,7 @@ def get_game_details(dota2_game_id):
     api = dota2api.Initialise("4B1FD9D1888114755F2A9C7B5788A085")
     global __game_data__
     if not __game_data__ or __game_data__['match_id'] !=  dota2_game_id:
-        #print("start to get game details: "+str(dota2_game_id))
+        ##print("start to get game details: "+str(dota2_game_id))
         #__game_data__ =  api.get_match_details(match_id=dota2_game_id)
 
 
@@ -34,7 +34,7 @@ def get_game_details(dota2_game_id):
 '''
         game_file =  "D:/PycharmProjects/data/game/"+str(dota2_game_id)+".txt"
         if os.path.exists(game_file):
-            #print ("has exsting file:"+game_file)
+            ##print ("has exsting file:"+game_file)
             with open(game_file, 'r') as file:
                 content = file.read()
                 __game_data__ = json.loads(content)
@@ -174,8 +174,8 @@ class HeroRecord:
 
 
     def output(self):
-        print("hero id: "+str(self.hero_id))
-        print("number of games: "+str(self.number_of_games))
+        #print("hero id: "+str(self.hero_id))
+        #print("number of games: "+str(self.number_of_games))
         pass
 
 class MemberInfo:
@@ -225,9 +225,9 @@ class MemberInfo:
                 self.member_last_60_days_history.append(match)
 
 
-        print (self.member_last_60_days_history)
+        #print (self.member_last_60_days_history)
 
-        print(len(self.member_last_60_days_history))
+        #print(len(self.member_last_60_days_history))
 
 
     def process(self):
@@ -313,29 +313,29 @@ class MemberInfo:
 
     def output(self):
         if self.total_games == 0 :
-            print("this player "+ str(self.member_id) +" seems didnt enable game history")
+            #print("this player "+ str(self.member_id) +" seems didnt enable game history")
             return
-        print("Plyaer id: "+str(self.member_id))
+        #print("Plyaer id: "+str(self.member_id))
 
-        print("total games: "+str(self.total_games))
-        print("total hero played: "+str(self.number_heros_played))
+        #print("total games: "+str(self.total_games))
+        #print("total hero played: "+str(self.number_heros_played))
 
-        print("total avg gpm: "+str(self.total_avg_gpm))
-        print("total win rate: "+str(self.total_win_rate))
-        print("total avg win gpm: "+str(self.total_avg_win_gpm))
-        print("total avg lose gpm: "+str(self.total_avg_lose_gpm))
-        print("last 24 hrs win rate: " + str(self.last_24_hrs_win_rate))
-        print("last 24 hrs win : " + str(self.last_24_hrs_win))
-        print("last 24 hrs lose : " + str(self.last_24_hrs_lose))
-        print("total number of heroes record collected:"+str(len(self.hero_record)))
+        #print("total avg gpm: "+str(self.total_avg_gpm))
+        #print("total win rate: "+str(self.total_win_rate))
+        #print("total avg win gpm: "+str(self.total_avg_win_gpm))
+        #print("total avg lose gpm: "+str(self.total_avg_lose_gpm))
+        #print("last 24 hrs win rate: " + str(self.last_24_hrs_win_rate))
+        #print("last 24 hrs win : " + str(self.last_24_hrs_win))
+        #print("last 24 hrs lose : " + str(self.last_24_hrs_lose))
+        #print("total number of heroes record collected:"+str(len(self.hero_record)))
 
         for hero in self.hero_record:
-            print ("hero id:"+str(hero.hero_id))
-            print ("hero played times:"+str(hero.number_of_games))
+            #print ("hero id:"+str(hero.hero_id))
+            #print ("hero played times:"+str(hero.number_of_games))
             hero.win_rate = round(hero.win_rate,2)
-            print ("hero win rate: "+str(hero.win_rate))
-            print ("gpm for win: "+str(hero.gpm_for_win))
-            print ("gpm for lose: "+str(hero.gpm_for_lose))
+            #print ("hero win rate: "+str(hero.win_rate))
+            #print ("gpm for win: "+str(hero.gpm_for_win))
+            #print ("gpm for lose: "+str(hero.gpm_for_lose))
 
     #output to json text
     def to_json(self):
@@ -433,7 +433,7 @@ def init_steam_api_key(name):
         if "Key:" in line:
             __steam_api_key__ = line.split("Key:",1)[1].strip()
 
-    print(__steam_api_key__)
+    #print(__steam_api_key__)
 
 
 def get_hero_name(hero_id):
@@ -475,20 +475,20 @@ def get_player_summary(dota2_id,attribute="personaname"):
 if __name__ == "__main__":
     #medusa = MemberInfo(444025333)
     medusa = MemberInfo(132044155)
-    print(medusa.member_id)
+    #print(medusa.member_id)
 
     medusa.process()
     medusa.output()
-    print(medusa.to_json())
+    #print(medusa.to_json())
 '''    get_player_summary(132044155)
     medusa = MemberInfo(132044155)
-    print(medusa.member_id)
+    #print(medusa.member_id)
     medusa.process()
     medusa.output()
-    print(medusa.to_json())
-    print(get_hero_images(1,"url_large_portrait"))
+    #print(medusa.to_json())
+    #print(get_hero_images(1,"url_large_portrait"))
     #get_game_details(3463314239)
-    #print(os.getcwd())
+    ##print(os.getcwd())
     #objs = [HeroRecord(101,1,100),HeroRecord(201,2,100),HeroRecord(200,3,1000)]
     #objs = sorted(objs,key=attrgetter('number_of_games'),reverse=True)
     #for obj in objs:

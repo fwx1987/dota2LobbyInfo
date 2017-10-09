@@ -1,0 +1,94 @@
+
+<html>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/3.3.0/css/tabulator.css" rel="stylesheet">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/3.3.0/js/tabulator.js"></script>
+   <script type="text/javascript" src="https://omnipotent.net/jquery.sparkline/2.1.2/jquery.sparkline.min.js"></script>
+  
+
+<head>
+ <style type="text/css">
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+    }
+    body {
+      background-color: transparent;
+      transform: perspective(1400px) matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+      transform-style: preserve-3d;
+    }
+    .team {
+      position: static;
+      width: 100%;
+      height: 50%;
+      left: 0px;
+      top: 0px;
+    }
+    .player {
+      width: 100%;
+      height: 50%;
+      margin: 0px;
+      float: left;
+    }
+
+
+    .playerinfo {}
+	
+	.player_row .hero_row {
+		height: 50px;
+	}
+	
+	td img{
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+	}
+	
+	.tabulator-cell
+	{
+	height: 50px;
+	}
+	
+  </style>
+</head>
+<body>
+
+
+<!--
+  <div class="team" border="1px solid black">
+		
+		<div id="radiant-table"></div>	
+	
+	</div>
+
+<hr>
+
+
+  <div class="team" border="1px solid black">
+		
+		<div id="dire-table"></div>	
+</div>
+-->
+
+<h1>Lobby player last 1 month favourite hero details (maximum 100 games)</h1>
+<div id="radiant-table"></div>	
+<div id="dire-table"></div>	
+
+
+
+<!--<div id="example-table2"></div>-->
+
+<script type="text/javascript">
+
+
+
+var radianttabledata =[{"player_slot": "1", "account_name": "\u675c", "account_avatar": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/b2/b2b5f17c442e6dc7b9a076282bdd9f9d81667089.jpg", "total_games": 68, "total_hero_played": 19, "total_avg_gpm": 516.9, "total_win_rate": 69.12, "total_avg_win_gpm": 530.15, "total_avg_lose_gpm": 487.24, "last_24_hrs_win_rate": 0.44, "last_24_hrs_win": 4, "last_24_hrs_lose": 5, "win_history": [-1, -1, 1, -1, 1, -1, 1, -1, -1, 1], "gpm_history": [499, 466, 521, 661, 572, 673, 570, 392, 414, 627, 100, 200, 300, 400, 500, 600, 700, 800, 900], "fav_hero": "Invoker", "hero_sb_image": "http://cdn.dota2.com/apps/dota2/images/heroes/invoker_sb.png", "hero_games_played": 36, "hero_win_rate": 63.89, "hero_gpm_for_win": 589.43, "hero_gpm_for_lose": 526.69, "hero_last_24_hrs_win_rate": 0.33, "hero_last_24_hrs_win": 2, "hero_last_24_hrs_lose": 4, "hero_win_history": [1, -1, -1, -1, 1]}, {"player_slot": "hero_1", "account_name": "Invoker", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/invoker_sb.png", "total_games": 36, "total_hero_played": "NA", "total_avg_gpm": 566.78, "total_win_rate": 63.89, "total_avg_win_gpm": 589.43, "total_avg_lose_gpm": 526.69, "last_24_hrs_win_rate": 0.33, "last_24_hrs_win": 2, "last_24_hrs_lose": 4, "win_history": [1, -1, -1, -1, 1], "gpm_history": [521, 661, 673, 392, 627, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "hero_1", "account_name": "Venomancer", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/venomancer_sb.png", "total_games": 6, "total_avg_gpm": 0, "total_hero_played": "NA", "total_win_rate": 100.0, "total_avg_win_gpm": 456.67, "total_avg_lose_gpm": 0, "last_24_hrs_win_rate": 1.0, "last_24_hrs_win": 1, "last_24_hrs_lose": 0, "win_history": [1, 1, 1, 1, 1], "gpm_history": [393, 396, 436, 445, 570, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "hero_1", "account_name": "Anti-Mage", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/antimage_sb.png", "total_games": 5, "total_avg_gpm": 0, "total_hero_played": "NA", "total_win_rate": 60.0, "total_avg_win_gpm": 609.0, "total_avg_lose_gpm": 335.5, "last_24_hrs_win_rate": 50.0, "last_24_hrs_win": 0, "last_24_hrs_lose": 0, "win_history": [1, 1, -1, 1, -1], "gpm_history": [635, 670, 423, 522, 248, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "2", "account_name": "\u50b2\u5a07\u7684\u8dea\u7740", "account_avatar": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/7b/7b3c337eb40ba9c9d27b264e829c8e240c20802e.jpg", "total_games": 100, "total_hero_played": 37, "total_avg_gpm": 446.3, "total_win_rate": 59.0, "total_avg_win_gpm": 469.68, "total_avg_lose_gpm": 412.66, "last_24_hrs_win_rate": 0.75, "last_24_hrs_win": 3, "last_24_hrs_lose": 1, "win_history": [-1, 1, -1, -1, 1, -1, 1, 1, 1, -1], "gpm_history": [339, 472, 454, 262, 473, 514, 428, 460, 474, 559, 100, 200, 300, 400, 500, 600, 700, 800, 900], "fav_hero": "Sniper", "hero_sb_image": "http://cdn.dota2.com/apps/dota2/images/heroes/sniper_sb.png", "hero_games_played": 10, "hero_win_rate": 50.0, "hero_gpm_for_win": 518.2, "hero_gpm_for_lose": 479.6, "hero_last_24_hrs_win_rate": 0.0, "hero_last_24_hrs_win": 0, "hero_last_24_hrs_lose": 1, "hero_win_history": [1, -1, 1, 1, -1]}, {"player_slot": "hero_2", "account_name": "Sniper", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/sniper_sb.png", "total_games": 10, "total_hero_played": "NA", "total_avg_gpm": 498.9, "total_win_rate": 50.0, "total_avg_win_gpm": 518.2, "total_avg_lose_gpm": 479.6, "last_24_hrs_win_rate": 0.0, "last_24_hrs_win": 0, "last_24_hrs_lose": 1, "win_history": [1, -1, 1, 1, -1], "gpm_history": [404, 285, 547, 473, 559, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "hero_2", "account_name": "Shadow Shaman", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/shadow_shaman_sb.png", "total_games": 8, "total_avg_gpm": 0, "total_hero_played": "NA", "total_win_rate": 62.5, "total_avg_win_gpm": 477.2, "total_avg_lose_gpm": 440.0, "last_24_hrs_win_rate": 1.0, "last_24_hrs_win": 1, "last_24_hrs_lose": 0, "win_history": [-1, 1, 1, -1, 1], "gpm_history": [504, 430, 478, 514, 460, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "hero_2", "account_name": "Earthshaker", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/earthshaker_sb.png", "total_games": 7, "total_avg_gpm": 0, "total_hero_played": "NA", "total_win_rate": 42.86, "total_avg_win_gpm": 393.67, "total_avg_lose_gpm": 353.25, "last_24_hrs_win_rate": 50.0, "last_24_hrs_win": 0, "last_24_hrs_lose": 0, "win_history": [1, -1, -1, -1, 1], "gpm_history": [339, 317, 358, 358, 424, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "hero_2", "account_name": "Zeus", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/zuus_sb.png", "total_games": 6, "total_avg_gpm": 0, "total_hero_played": "NA", "total_win_rate": 83.33, "total_avg_win_gpm": 416.6, "total_avg_lose_gpm": 476.0, "last_24_hrs_win_rate": 50.0, "last_24_hrs_win": 0, "last_24_hrs_lose": 0, "win_history": [1, 1, 1, -1, 1], "gpm_history": [236, 480, 513, 476, 456, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "hero_2", "account_name": "Medusa", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/medusa_sb.png", "total_games": 6, "total_avg_gpm": 0, "total_hero_played": "NA", "total_win_rate": 83.33, "total_avg_win_gpm": 594.2, "total_avg_lose_gpm": 397.0, "last_24_hrs_win_rate": 50.0, "last_24_hrs_win": 0, "last_24_hrs_lose": 0, "win_history": [1, 1, 1, -1, 1], "gpm_history": [539, 627, 638, 397, 629, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "hero_2", "account_name": "Anti-Mage", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/antimage_sb.png", "total_games": 6, "total_avg_gpm": 0, "total_hero_played": "NA", "total_win_rate": 50.0, "total_avg_win_gpm": 624.67, "total_avg_lose_gpm": 514.33, "last_24_hrs_win_rate": 50.0, "last_24_hrs_win": 0, "last_24_hrs_lose": 0, "win_history": [1, 1, -1, -1, -1], "gpm_history": [584, 578, 597, 398, 548, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "hero_2", "account_name": "Mirana", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/mirana_sb.png", "total_games": 5, "total_avg_gpm": 0, "total_hero_played": "NA", "total_win_rate": 60.0, "total_avg_win_gpm": 452.0, "total_avg_lose_gpm": 358.0, "last_24_hrs_win_rate": 50.0, "last_24_hrs_win": 0, "last_24_hrs_lose": 0, "win_history": [1, 1, 1, -1, -1], "gpm_history": [474, 410, 472, 454, 262, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "3", "account_name": "720", "account_avatar": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/8f/8f155019471964e5bbdbc59f54783af821d907b6.jpg", "total_games": 0, "total_hero_played": 0, "total_avg_gpm": 0, "total_win_rate": 0, "total_avg_win_gpm": 0, "total_avg_lose_gpm": 0, "last_24_hrs_win_rate": 50.0, "last_24_hrs_win": 0, "last_24_hrs_lose": 0, "win_history": [], "gpm_history": []}, {"player_slot": "4", "account_name": "\u6355\u9c7c\u5c0f\u80fd\u624b", "account_avatar": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg", "total_games": 37, "total_hero_played": 13, "total_avg_gpm": 664.84, "total_win_rate": 97.3, "total_avg_win_gpm": 670.28, "total_avg_lose_gpm": 469.0, "last_24_hrs_win_rate": 0.88, "last_24_hrs_win": 7, "last_24_hrs_lose": 1, "win_history": [1, 1, 1, 1, -1, 1, 1, 1, 1, 1], "gpm_history": [645, 459, 733, 469, 469, 701, 900, 695, 446, 662, 100, 200, 300, 400, 500, 600, 700, 800, 900], "fav_hero": "Invoker", "hero_sb_image": "http://cdn.dota2.com/apps/dota2/images/heroes/invoker_sb.png", "hero_games_played": 13, "hero_win_rate": 100.0, "hero_gpm_for_win": 719.15, "hero_gpm_for_lose": 0, "hero_last_24_hrs_win_rate": 1.0, "hero_last_24_hrs_win": 3, "hero_last_24_hrs_lose": 0, "hero_win_history": [1, 1, 1, 1, 1]}, {"player_slot": "hero_4", "account_name": "Invoker", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/invoker_sb.png", "total_games": 13, "total_hero_played": "NA", "total_avg_gpm": 719.15, "total_win_rate": 100.0, "total_avg_win_gpm": 719.15, "total_avg_lose_gpm": 0, "last_24_hrs_win_rate": 1.0, "last_24_hrs_win": 3, "last_24_hrs_lose": 0, "win_history": [1, 1, 1, 1, 1], "gpm_history": [595, 649, 733, 900, 695, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "hero_4", "account_name": "Ember Spirit", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/ember_spirit_sb.png", "total_games": 6, "total_avg_gpm": 0, "total_hero_played": "NA", "total_win_rate": 100.0, "total_avg_win_gpm": 704.17, "total_avg_lose_gpm": 0, "last_24_hrs_win_rate": 1.0, "last_24_hrs_win": 2, "last_24_hrs_lose": 0, "win_history": [1, 1, 1, 1, 1], "gpm_history": [891, 738, 808, 469, 662, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "5", "account_name": "\u51e0\u4e4eik", "account_avatar": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg", "total_games": 0, "total_hero_played": 0, "total_avg_gpm": 0, "total_win_rate": 0, "total_avg_win_gpm": 0, "total_avg_lose_gpm": 0, "last_24_hrs_win_rate": 50.0, "last_24_hrs_win": 0, "last_24_hrs_lose": 0, "win_history": [], "gpm_history": []}];
+var diretabledata =[{"player_slot": "6", "account_name": "\u8349\u54ed\u5c0f\u59d0\u59d0", "account_avatar": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/07/0743ed8db8bf7a04bd05022cd03a00e711dc7b38.jpg", "total_games": 60, "total_hero_played": 39, "total_avg_gpm": 356.17, "total_win_rate": 56.67, "total_avg_win_gpm": 375.94, "total_avg_lose_gpm": 330.31, "last_24_hrs_win_rate": 0.6, "last_24_hrs_win": 6, "last_24_hrs_lose": 4, "win_history": [1, 1, -1, 1, 1, 1, 1, -1, -1, -1], "gpm_history": [338, 207, 327, 372, 323, 332, 386, 381, 318, 203, 100, 200, 300, 400, 500, 600, 700, 800, 900], "fav_hero": "Axe", "hero_sb_image": "http://cdn.dota2.com/apps/dota2/images/heroes/axe_sb.png", "hero_games_played": 7, "hero_win_rate": 42.86, "hero_gpm_for_win": 322.33, "hero_gpm_for_lose": 314.75, "hero_last_24_hrs_win_rate": 0.5, "hero_last_24_hrs_win": 1, "hero_last_24_hrs_lose": 1, "hero_win_history": [1, -1, -1, 1, -1]}, {"player_slot": "hero_6", "account_name": "Axe", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/axe_sb.png", "total_games": 7, "total_hero_played": "NA", "total_avg_gpm": 318.0, "total_win_rate": 42.86, "total_avg_win_gpm": 322.33, "total_avg_lose_gpm": 314.75, "last_24_hrs_win_rate": 0.5, "last_24_hrs_win": 1, "last_24_hrs_lose": 1, "win_history": [1, -1, -1, 1, -1], "gpm_history": [351, 266, 343, 323, 318, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "7", "account_name": "Reedoom", "account_avatar": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/cb/cb5195be60d7779f1b7d7d54258cdd8076583bb1.jpg", "total_games": 36, "total_hero_played": 9, "total_avg_gpm": 105.08, "total_win_rate": 58.33, "total_avg_win_gpm": 166.9, "total_avg_lose_gpm": 18.53, "last_24_hrs_win_rate": 0.86, "last_24_hrs_win": 6, "last_24_hrs_lose": 1, "win_history": [-1, 1, 1, 1, 1, -1, 1, 1, 1, 1], "gpm_history": [0, 0, 0, 630, 520, 278, 538, 391, 456, 349, 100, 200, 300, 400, 500, 600, 700, 800, 900], "fav_hero": null, "hero_sb_image": null, "hero_games_played": 28, "hero_win_rate": 50.0, "hero_gpm_for_win": 0.0, "hero_gpm_for_lose": 0.0, "hero_last_24_hrs_win_rate": 50.0, "hero_last_24_hrs_win": 0, "hero_last_24_hrs_lose": 0, "hero_win_history": [-1, -1, -1, 1, 1]}, {"player_slot": "hero_7", "account_name": null, "account_avatar": null, "total_games": 28, "total_hero_played": "NA", "total_avg_gpm": 0.0, "total_win_rate": 50.0, "total_avg_win_gpm": 0.0, "total_avg_lose_gpm": 0.0, "last_24_hrs_win_rate": 50.0, "last_24_hrs_win": 0, "last_24_hrs_lose": 0, "win_history": [-1, -1, -1, 1, 1], "gpm_history": [0, 0, 0, 0, 0, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "8", "account_name": "\u6d77\u7ef5\u4f53\u5927\u6218\u62ec\u7ea6\u808c", "account_avatar": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/d6/d6d9a5cff25b5c2e4de4da7446a62c7e39d0ea0d.jpg", "total_games": 67, "total_hero_played": 42, "total_avg_gpm": 393.67, "total_win_rate": 50.75, "total_avg_win_gpm": 413.32, "total_avg_lose_gpm": 373.42, "last_24_hrs_win_rate": 1.0, "last_24_hrs_win": 1, "last_24_hrs_lose": 0, "win_history": [-1, -1, 1, -1, -1, -1, -1, -1, 1, 1], "gpm_history": [399, 383, 246, 331, 653, 350, 360, 379, 366, 313, 100, 200, 300, 400, 500, 600, 700, 800, 900], "fav_hero": "Nature's Prophet", "hero_sb_image": "http://cdn.dota2.com/apps/dota2/images/heroes/furion_sb.png", "hero_games_played": 5, "hero_win_rate": 80.0, "hero_gpm_for_win": 377.5, "hero_gpm_for_lose": 566.0, "hero_last_24_hrs_win_rate": 50.0, "hero_last_24_hrs_win": 0, "hero_last_24_hrs_lose": 0, "hero_win_history": [1, -1, 1, 1, 1]}, {"player_slot": "hero_8", "account_name": "Nature's Prophet", "account_avatar": "http://cdn.dota2.com/apps/dota2/images/heroes/furion_sb.png", "total_games": 5, "total_hero_played": "NA", "total_avg_gpm": 415.2, "total_win_rate": 80.0, "total_avg_win_gpm": 377.5, "total_avg_lose_gpm": 566.0, "last_24_hrs_win_rate": 50.0, "last_24_hrs_win": 0, "last_24_hrs_lose": 0, "win_history": [1, -1, 1, 1, 1], "gpm_history": [413, 566, 374, 334, 389, 100, 200, 300, 400, 500, 600, 700, 800, 900]}, {"player_slot": "9", "account_name": "\u70e6\u70e6\u70e6", "account_avatar": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg", "total_games": 0, "total_hero_played": 0, "total_avg_gpm": 0, "total_win_rate": 0, "total_avg_win_gpm": 0, "total_avg_lose_gpm": 0, "last_24_hrs_win_rate": 50.0, "last_24_hrs_win": 0, "last_24_hrs_lose": 0, "win_history": [], "gpm_history": []}, {"player_slot": "10", "account_name": "jeni", "account_avatar": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg", "total_games": 0, "total_hero_played": 0, "total_avg_gpm": 0, "total_win_rate": 0, "total_avg_win_gpm": 0, "total_avg_lose_gpm": 0, "last_24_hrs_win_rate": 50.0, "last_24_hrs_win": 0, "last_24_hrs_lose": 0, "win_history": [], "gpm_history": []}];
+
+</script>
+
+<script type="text/javascript" src="report.js"></script>
+</body>
+</html>

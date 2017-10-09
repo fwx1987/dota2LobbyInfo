@@ -115,7 +115,7 @@ class Player:
         self.matches_win_history = []
 
 
-        #recent match info, minmum 5 matches
+        #recent match info, maximum 5 matches
         index = 0
         for match in self.recent_match_data:
             if index<5:
@@ -167,6 +167,7 @@ class Player:
         json_text['solo_mmr']= self.solo_mmr
         json_text['group_mmr']= self.group_mmr
         json_text['mmr_estimate']= self.mmr_estimate
+        self.matches_win_history.reverse()
         json_text['matches_win_history']= self.matches_win_history
         json_text['gpm_hisotry']=self.gpm_hisotry
         json_text['class'] = "player"

@@ -1,86 +1,4 @@
 
-<html>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
-  <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/3.3.0/css/tabulator.css" rel="stylesheet">
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/3.3.0/js/tabulator.js"></script>
-   <script type="text/javascript" src="https://omnipotent.net/jquery.sparkline/2.1.2/jquery.sparkline.min.js"></script>
-  
-
-<head>
- <style type="text/css">
-    html, body {
-      width: 100%;
-      height: 100%;
-      margin: 0px;
-    }
-    body {
-      background-color: transparent;
-      transform: perspective(1400px) matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-      transform-style: preserve-3d;
-    }
-    .team {
-      position: static;
-      width: 100%;
-      height: 50%;
-      left: 0px;
-      top: 0px;
-    }
-    .player {
-      width: 100%;
-      height: 50%;
-      margin: 0px;
-      float: left;
-    }
-
-
-    .playerinfo {}
-	
-	.player_row .hero_row {
-		height: 50px;
-	}
-	
-	td img{
-	display: block;
-    margin-left: auto;
-    margin-right: auto;
-	}
-	
-	.tabulator-cell
-	{
-	height: 50px;
-	}
-	
-  </style>
-</head>
-<body>
-
-
-<!--
-  <div class="team" border="1px solid black">
-		
-		<div id="radiant-table"></div>	
-	
-	</div>
-
-<hr>
-
-
-  <div class="team" border="1px solid black">
-		
-		<div id="dire-table"></div>	
-</div>
--->
-<div id="radiant-table"></div>	
-<div id="dire-table"></div>	
-
-
-
-<!--<div id="example-table2"></div>-->
-
-<script type="text/javascript">
-
-
 
 var lineFormatter = function(cell, formatterParams){
     setTimeout(function(){ //give cell enough time to be added to the DOM before calling sparkline formatter
@@ -119,11 +37,6 @@ var pieFormatter = function(cell, formatterParams){
 };
 
 
-
-var radianttabledata = @@
-
-var diretabledata = @@
-
 $("#radiant-table").tabulator({
     //width:216,
 	//height:205, // set height of table, this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
@@ -135,7 +48,7 @@ $("#radiant-table").tabulator({
 	//groupBy:"type",
 	//groupToggleElement:"header",
 	//groupStartOpen:false,
-	
+
     columns:[ //Define Table Columns
 			{title:"Lobby", field:"player_slot",formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
@@ -148,8 +61,8 @@ $("#radiant-table").tabulator({
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
 					}
 				}},
-				
-			{field:"account_avatar",width:68,formatter:function(cell, formatterParams){
+
+			{field:"account_avatar",width:125,formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
 					if(value.indexOf("heroes/") >=0){
 						return "<img src='"+value + "' style=\"height:33,width=59,background-size: cover;\"/>";
@@ -160,20 +73,21 @@ $("#radiant-table").tabulator({
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
 					}
 				}},
-			{title:"Player/Hero", width:125,field:"account_name"},
+			{title:"Player/Hero", width:150,field:"account_name"},
 			{title:"Games", field:"total_games"},
 			{title:"Match History", field:"win_history",width:160, formatter:tristateFormatter},
-			
+
 			{title:"Avg GPM", field:"total_avg_gpm"},
 			{title:"GPM Box Plot", field:"gpm_history",width:160, formatter:boxFormatter },
 			{title:"Win Avg GPM", field:"total_avg_win_gpm"},
 			{title:"Lose Avg GPM", field:"total_avg_lose_gpm"},
-			
-			
+
+
 			{title:"Favourite Hero", width:68,field:"hero_sb_image",formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
 				    if ("undefined"  != typeof value) {
-					
+						if (value !=null)
+					{
 					if (value.indexOf("heroes/") >=0){
 						return "<img src='"+value + "' style=\"height:33,width=59,background-size: cover;\"/>";
 						//return "<img src='"+value + "' style=\"width:auto;height:auto;\"/>";
@@ -182,35 +96,35 @@ $("#radiant-table").tabulator({
 						return "<img src='"+value + "' style=\"height:32,width:32\"/>";
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
 					}
-					
-					
-					
-					}
-					
+
+
+
+					}}
+
 				}},
 			{title:"Games", field:"hero_games_played"},
 			{title:"Fav Win History", field:"hero_win_history",formatter:tristateFormatter},
 			{title:"Fav Win GPM", field:"hero_gpm_for_win"},
 			{title:"Fav Lose GPM", field:"hero_gpm_for_lose"}
-		
+
 		//{title:"day reocrd", field:"hero_last_24_hrs_win_rate",formatter:"progress",formatterParams:{min:10,max:80,color:"#FF0000"}},
 		//{title:"day win", field:"hero_last_24_hrs_win"},
     ],
-	
+
 	rowFormatter:function(row){
         //row - row component
 
         var data = row.getData();
-		
-		
+
+
 		if (data.player_slot !=null){
-		
+
 			if (data.player_slot.length ==1)
 			{
 				row.getElement().addClass("player_row")
 				row.getElement().css({"height":"50px"});
 			}
-		
+
 			if (data.player_slot.indexOf("hero_")!=-1)
 			//if (data != null and data.type.indexOf("hero_")!=-1)
 			{
@@ -219,31 +133,31 @@ $("#radiant-table").tabulator({
 				//row.getElement().style.display= 'none';
 				//row.getElement().hide();
 				//alert(row.getElement().getAttribute( "class" ))
-				
+
 				var s = row.getElement()[0];
-				
+
 				s.classList.add("hero_row");
 				s.classList.add(data.player_slot);
 				//s.style.display = 'None';
 				s.hidden = false
 				//alert(1);
-				
+
 			}
-		
-		
+
+
 		}
 
-	
-		
+
+
     },
-    
-	
-	
+
+
+
 	rowClick:function(e, row){ //trigger an alert message when the row is clicked
         //alert("Row " + row.getData().player_slot + " Clicked!!!!");
 		var rowHero = document.getElementsByClassName('hero_'+(row.getData().player_slot))
 		for (i=0;i<rowHero.length;i++)
-		{	
+		{
 			if (rowHero[i].hidden )
 			{
 				rowHero[i].hidden = false
@@ -253,11 +167,11 @@ $("#radiant-table").tabulator({
 			}
 		//rowHero[i].hidden = true
 		}
-		
-		
+
+
     },
-	
-	
+
+
 });
 
 $("#dire-table").tabulator({
@@ -271,7 +185,7 @@ $("#dire-table").tabulator({
 	//groupBy:"type",
 	//groupToggleElement:"header",
 	//groupStartOpen:false,
-	
+
     columns:[ //Define Table Columns
 			{title:"Lobby", field:"player_slot",formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
@@ -284,7 +198,7 @@ $("#dire-table").tabulator({
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
 					}
 				}},
-				
+
 			{field:"account_avatar",width:125,formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
 					if(value.indexOf("heroes/") >=0){
@@ -296,20 +210,21 @@ $("#dire-table").tabulator({
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
 					}
 				}},
-			{title:"Player/Hero", field:"account_name"},
+			{title:"Player/Hero", width:150,field:"account_name"},
 			{title:"Games", field:"total_games"},
 			{title:"Win History", field:"win_history",width:160, formatter:tristateFormatter},
-			
+
 			{title:"Avg GPM", field:"total_avg_gpm"},
 			{title:"GPM Box Plot", field:"gpm_history",width:160, formatter:boxFormatter },
 			{title:"Win Avg GPM", field:"total_avg_win_gpm"},
 			{title:"Lose Avg GPM", field:"total_avg_lose_gpm"},
-			
-			
+
+
 			{title:"Favourite Hero", width:68,field:"hero_sb_image",formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
 				    if ("undefined"  != typeof value) {
-					
+					if (value !=null)
+					{
 					if (value.indexOf("heroes/") >=0){
 						return "<img src='"+value + "' style=\"height:33,width=59,background-size: cover;\"/>";
 						//return "<img src='"+value + "' style=\"width:auto;height:auto;\"/>";
@@ -318,35 +233,35 @@ $("#dire-table").tabulator({
 						return "<img src='"+value + "' style=\"height:32,width:32\"/>";
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
 					}
-					
-					
-					
-					}
-					
+
+
+
+					}}
+
 				}},
 			{title:"Games", field:"hero_games_played"},
 			{title:"Fav Win History", field:"hero_win_history",formatter:tristateFormatter},
 			{title:"Fav Win GPM", field:"hero_gpm_for_win"},
 			{title:"Fav Lose GPM", field:"hero_gpm_for_lose"}
-		
+
 		//{title:"day reocrd", field:"hero_last_24_hrs_win_rate",formatter:"progress",formatterParams:{min:10,max:80,color:"#FF0000"}},
 		//{title:"day win", field:"hero_last_24_hrs_win"},
     ],
-	
+
 	rowFormatter:function(row){
         //row - row component
 
         var data = row.getData();
-		
-		
+
+
 		if (data.player_slot !=null){
-		
+
 			if (data.player_slot.length ==1)
 			{
 				row.getElement().addClass("player_row")
 				row.getElement().css({"height":"50px"});
 			}
-		
+
 			if (data.player_slot.indexOf("hero_")!=-1)
 			//if (data != null and data.type.indexOf("hero_")!=-1)
 			{
@@ -355,31 +270,31 @@ $("#dire-table").tabulator({
 				//row.getElement().style.display= 'none';
 				//row.getElement().hide();
 				//alert(row.getElement().getAttribute( "class" ))
-				
+
 				var s = row.getElement()[0];
-				
+
 				s.classList.add("hero_row");
 				s.classList.add(data.player_slot);
 				//s.style.display = 'None';
 				s.hidden = false
 				//alert(1);
-				
+
 			}
-		
-		
+
+
 		}
 
-	
-		
+
+
     },
-    
-	
-	
+
+
+
 	rowClick:function(e, row){ //trigger an alert message when the row is clicked
         //alert("Row " + row.getData().player_slot + " Clicked!!!!");
 		var rowHero = document.getElementsByClassName('hero_'+(row.getData().player_slot))
 		for (i=0;i<rowHero.length;i++)
-		{	
+		{
 			if (rowHero[i].hidden )
 			{
 				rowHero[i].hidden = false
@@ -389,11 +304,11 @@ $("#dire-table").tabulator({
 			}
 		//rowHero[i].hidden = true
 		}
-		
-		
+
+
     },
-	
-	
+
+
 });
 
 //load sample data into the table
@@ -412,14 +327,8 @@ $(document).ready(function(){
 		var rowHero  = document.getElementsByClassName('hero_'+row)
 		for (i=0;i<rowHero.length;i++)
 		{
-			rowHero[i].hidden=true		
+			rowHero[i].hidden=true
 		}
 
 	}
 });
-
-	
-
-</script>
-</body>
-</html>
