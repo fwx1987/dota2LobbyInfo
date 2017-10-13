@@ -14,11 +14,14 @@ def db_insert_match_details(match_id,match_details,is_processed=False):
     conn = db_connect()
     cursor = conn.cursor()
 
-
-    statement = 'insert into steam_match_details (match_id,match_details) values (?,?)'
-    cursor.execute(statement,(match_id,match_details))
-    conn.commit()
-
+    try:
+        statement = 'insert into steam_match_details (match_id,match_details) values (?,?)'
+        cursor.execute(statement,(match_id,match_details))
+        conn.commit()
+    except Exception as e:
+        conn.close()
+        conn = None
+        print (str(e) +"match id: "+str(match_id))
 
 
 def db_is_match_exist(match_id):
