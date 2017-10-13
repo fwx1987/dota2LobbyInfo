@@ -309,6 +309,11 @@ class MemberInfo:
     def sort_hero_record(self):
 
         self.hero_record = sorted(self.hero_record,key=attrgetter('number_of_games'),reverse=True)
+
+        if len(self.hero_record)>=1:
+            for hero in self.hero_record:
+                if hero.hero_id == 0:
+                    self.hero_record.remove(hero)
         pass
 
     def output(self):

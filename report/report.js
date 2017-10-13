@@ -64,6 +64,9 @@ $("#radiant-table").tabulator({
 
 			{field:"account_avatar",width:125,formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
+				   
+				   if (value != null)
+				   {
 					if(value.indexOf("heroes/") >=0){
 						return "<img src='"+value + "' style=\"height:33,width=59,background-size: cover;\"/>";
 						//return "<img src='"+value + "' style=\"width:auto;height:auto;\"/>";
@@ -71,6 +74,7 @@ $("#radiant-table").tabulator({
 					}else{
 						return "<img src='"+value + "' style=\"height:32,width:32\"/>";
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
+					}
 					}
 				}},
 			{title:"Player/Hero", width:150,field:"account_name"},
@@ -201,6 +205,8 @@ $("#dire-table").tabulator({
 
 			{field:"account_avatar",width:125,formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
+				   					if (value !=null)
+					{
 					if(value.indexOf("heroes/") >=0){
 						return "<img src='"+value + "' style=\"height:33,width=59,background-size: cover;\"/>";
 						//return "<img src='"+value + "' style=\"width:auto;height:auto;\"/>";
@@ -208,6 +214,7 @@ $("#dire-table").tabulator({
 					}else{
 						return "<img src='"+value + "' style=\"height:32,width:32\"/>";
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
+					}
 					}
 				}},
 			{title:"Player/Hero", width:150,field:"account_name"},
@@ -322,7 +329,7 @@ $(window).resize(function(){
 });
 
 $(document).ready(function(){
-	for (row=0;row<=9;row++)
+	for (row=0;row<=10;row++)
 	{
 		var rowHero  = document.getElementsByClassName('hero_'+row)
 		for (i=0;i<rowHero.length;i++)
