@@ -1,0 +1,56 @@
+[
+  {
+    "skill_name":"Cold Snap",
+    "skill_cast":"QQQ",
+    "img":"https://dota2.gamepedia.com/media/dota2.gamepedia.com/4/4a/Quas_icon.png?version=365729118183ed98a3527d02bd6b7f43",
+    "cool_down":20
+  },
+  {
+    "skill_name":"EMP",
+    "skill_cast":"WWW",
+    "img":"https://dota2.gamepedia.com/media/dota2.gamepedia.com/4/4a/Quas_icon.png?version=365729118183ed98a3527d02bd6b7f43",
+    "cool_down":20
+  },
+  {
+    "skill_name":"Tornado",
+    "skill_cast":"QWW",
+    "img":"https://dota2.gamepedia.com/media/dota2.gamepedia.com/4/4a/Quas_icon.png?version=365729118183ed98a3527d02bd6b7f43",
+    "cool_down":20
+  },  {
+    "skill_name":"Alacrity",
+    "skill_cast":"WEE",
+    "img":"https://dota2.gamepedia.com/media/dota2.gamepedia.com/4/4a/Quas_icon.png?version=365729118183ed98a3527d02bd6b7f43",
+    "cool_down":20
+  },  {
+    "skill_name":"Quas",
+    "skill_cast":"QQQ",
+    "img":"https://dota2.gamepedia.com/media/dota2.gamepedia.com/4/4a/Quas_icon.png?version=365729118183ed98a3527d02bd6b7f43",
+    "cool_down":20
+  },  {
+    "skill_name":"Ice Wall",
+    "skill_cast":"QQE",
+    "img":"https://dota2.gamepedia.com/media/dota2.gamepedia.com/4/4a/Quas_icon.png?version=365729118183ed98a3527d02bd6b7f43",
+    "cool_down":20
+  },  {
+    "skill_name":"Forge Spirit",
+    "skill_cast":"QEE",
+    "img":"https://dota2.gamepedia.com/media/dota2.gamepedia.com/4/4a/Quas_icon.png?version=365729118183ed98a3527d02bd6b7f43",
+    "cool_down":20
+  },  {
+    "skill_name":"Sun Strike",
+    "skill_cast":"EEE",
+    "img":"https://dota2.gamepedia.com/media/dota2.gamepedia.com/4/4a/Quas_icon.png?version=365729118183ed98a3527d02bd6b7f43",
+    "cool_down":20
+  },  {
+    "skill_name":"Chaos Meteor",
+    "skill_cast":"WEE",
+    "img":"https://dota2.gamepedia.com/media/dota2.gamepedia.com/4/4a/Quas_icon.png?version=365729118183ed98a3527d02bd6b7f43",
+    "cool_down":20
+  },  {
+    "skill_name":"Deafening Blast",
+    "skill_cast":"QWE",
+    "img":"https://dota2.gamepedia.com/media/dota2.gamepedia.com/4/4a/Quas_icon.png?version=365729118183ed98a3527d02bd6b7f43",
+    "cool_down":20
+  }
+]
+
