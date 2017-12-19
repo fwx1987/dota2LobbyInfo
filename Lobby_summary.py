@@ -15,6 +15,7 @@ def get_player_info_to_file(player_id,file,player_lobby):
     json_obj = player_Obj.to_html_source_json()
 
     all=[]
+    ' add player lobby info into the json'
     for item in json_obj:
         item['player_lobby'] = player_lobby
         all.append(item)
@@ -26,21 +27,6 @@ def get_player_info_to_file(player_id,file,player_lobby):
 
     with open(file, 'w') as file:
         file.write(json.dumps(all))
-
-        '''
-            #print ("has exsting file:"+game_file)
-            with open(game_file, 'r') as file:
-                content = file.read()
-                __game_data__ = json.loads(content)
-        else:
-            __game_data__ = api.get_match_details(match_id=dota2_game_id)
-            with open(game_file, 'w') as file:
-                 file.write(json.dumps(__game_data__)) '''
-    #with open('file.txt', 'w') as file:
-    #     file.write(json.dumps(__game_data__))
-    #with open('file.txt', 'r') as file:
-    #     content = file.read()
-    #__game_data__ = json.loads(content)
 
 
 class Plyaer_Info_collector_Thread (threading.Thread):
@@ -150,13 +136,8 @@ def generate_summary_html_report2(player_array):
 
 if __name__ == "__main__":
 
-
-
     latest = []
-
     newcoming =ServerLogReader.get_lobby_members()
-
-
     times = 1
 
     start_time = time.time()

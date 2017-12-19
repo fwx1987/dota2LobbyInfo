@@ -79,6 +79,7 @@ class Player:
         self.player_data = odota_get_player(account_id)
         self.recent_match_data = odota_get_recent_match(account_id)
         self.name = ""
+        self.rank_tier=""
         self.avatar = ""
         self.solo_mmr = 0
         self.group_mmr = 0
@@ -95,12 +96,18 @@ class Player:
             self.name = self.player_data['profile']['personaname']
         except KeyError as e:
             pass
+        #player rank tier
+        try:
+            self.rank_tier = self.player_data['rank_tier']
+        except KeyError as e:
+            pass
 
         try:
             self.avatar = self.player_data['profile']['avatar']
 
         except KeyError as e:
             pass
+
         self.solo_mmr = self.player_data['solo_competitive_rank']
         self.group_mmr = self.player_data['competitive_rank']
 
@@ -171,6 +178,7 @@ class Player:
         json_text['matches_win_history']= self.matches_win_history
         json_text['gpm_hisotry']=self.gpm_hisotry
         json_text['class'] = "player"
+        json_text['rank_tier']=self.rank_tier
 
         result.append(json_text)
 
