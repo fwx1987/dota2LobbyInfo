@@ -87,14 +87,10 @@ $("#radiant-table").tabulator({
 					if (value !=null)
 					{
 				
-					if(value.toString().indexOf("heroes/") >=0){
-						return "<img src='"+value + "' style=\"height:33,width=59,background-size: cover;\"/>";
-						//return "<img src='"+value + "' style=\"width:auto;height:auto;\"/>";
-						//background-size: cover;
-					}else{
-						return "<img src='"+value + "' style=\"height:32,width:32\"/>";
+	
+						return "<div class=\"rank\"><img src='res\\180px-SeasonalRank"+value + ".png max-width:100%;max-height:100%;/></div>";
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
-					}}
+					}
 					}
 				}},
 			{title:"Player", width:150,field:"name"},
