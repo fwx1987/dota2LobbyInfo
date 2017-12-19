@@ -81,6 +81,22 @@ $("#radiant-table").tabulator({
 					}}
 					}
 				}},
+			{field:"rank_tier",title:"Rank",width:68,formatter:function(cell, formatterParams){
+				   var value = cell.getValue();
+					if ("undefined"  != typeof value){
+					if (value !=null)
+					{
+				
+					if(value.toString().indexOf("heroes/") >=0){
+						return "<img src='"+value + "' style=\"height:33,width=59,background-size: cover;\"/>";
+						//return "<img src='"+value + "' style=\"width:auto;height:auto;\"/>";
+						//background-size: cover;
+					}else{
+						return "<img src='"+value + "' style=\"height:32,width:32\"/>";
+						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
+					}}
+					}
+				}},
 			{title:"Player", width:150,field:"name"},
 			{title:"Solo MMR", field:"solo_mmr"},
 			{title:"Group MMR", field:"group_mmr"},

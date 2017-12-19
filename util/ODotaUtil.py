@@ -80,6 +80,7 @@ class Player:
         self.recent_match_data = odota_get_recent_match(account_id)
         self.name = ""
         self.rank_tier=""
+        self.leaderboard_rank=""
         self.avatar = ""
         self.solo_mmr = 0
         self.group_mmr = 0
@@ -99,9 +100,15 @@ class Player:
         #player rank tier
         try:
             self.rank_tier = self.player_data['rank_tier']
+
+            if self.rank_tier == "null":
+                self.rank_tier="00"
         except KeyError as e:
             pass
-
+        try:
+            self.leaderboard_rank = self.player_data['leaderboard_rank']
+        except KeyError as e:
+            pass
         try:
             self.avatar = self.player_data['profile']['avatar']
 
@@ -179,7 +186,7 @@ class Player:
         json_text['gpm_hisotry']=self.gpm_hisotry
         json_text['class'] = "player"
         json_text['rank_tier']=self.rank_tier
-
+        json_text['leaderboard_rank']= self.leaderboard_rank
         result.append(json_text)
 
         #simply retrun all match details for html to process
