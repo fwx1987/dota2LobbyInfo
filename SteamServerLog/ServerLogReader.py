@@ -57,7 +57,7 @@ def get_lobby_members():
     tasks = os.popen("tasklist | findstr dota2.exe")
 
     ' if dota2 currently is running, read from actual file, otherwise test file'
-    if len(tasks.read()) == 0:
+    if len(os.popen("tasklist |findstr dota2.exe").read()) > 0:
         f = open('C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log.txt', 'r')
     else:
         f = open('C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log_test.txt', 'r')
