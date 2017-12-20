@@ -1,4 +1,4 @@
-
+import os
 class LatestLobby:
     raw_string=""
 
@@ -54,9 +54,14 @@ class LatestLobby:
 
 
 def get_lobby_members():
-    #f = open('C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log.txt', 'r')
-    f = open('C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log_test.txt', 'r')
-    #f = open('D:\Files\PersonalFolders\Dota2\server_log.txt', 'r')
+    tasks = os.popen("tasklist | findstr dota2.exe")
+
+    ' if dota2 currently is running, read from actual file, otherwise test file'
+    if len(tasks.read()) == 0:
+        f = open('C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log.txt', 'r')
+    else:
+        f = open('C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log_test.txt', 'r')
+
     lastline = ""
     for line in f:
         if "Lobby" in line:
