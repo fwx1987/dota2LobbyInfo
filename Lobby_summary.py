@@ -8,6 +8,7 @@ from util import ODotaUtil
 from shutil import copyfile
 import time
 import webbrowser,threading
+import logging,logging.handlers
 
 
 def get_player_info_to_file(player_id,file,player_lobby):
@@ -26,6 +27,7 @@ def get_player_info_to_file(player_id,file,player_lobby):
         os.remove(file)
 
     with open(file, 'w') as file:
+        logger.debug('get info for  player_id: '+str(player_id)+' '+'player_lobby: '+str(player_lobby)+' '+'successful, the content is '+json.dumps(all))
         file.write(json.dumps(all))
 
 
@@ -39,9 +41,9 @@ class Plyaer_Info_collector_Thread (threading.Thread):
       self.file = file
 
    def run(self):
-      print ("Starting thread: " + self.name +" to collect info for player: "+str(self.player_id))
+      logger.info ("Starting thread: " + self.name +" to collect info for player: "+str(self.player_id))
       get_player_info_to_file(self.player_id, self.file,self.player_lobby)
-      print ("collect info for player: "+str(self.player_id) + " finsihed")
+      logger.info ("collect info for player: "+str(self.player_id) + " finsihed")
 
 def generate_summary_html_report(player_array):
 
@@ -49,7 +51,28 @@ def generate_summary_html_report(player_array):
     print(fileDir)
     template_report = os.path.join(fileDir, 'report\summary_template.html')
     target_report = os.path.join(fileDir, 'report\summary.html')
-
+    date_today = time.strftime('%Y%m%d')
+    try:
+        if not os.path.exists(os.path.join(fileDir,'report\\'+date_today+"\\")):
+            os.mkdir(os.path.join(fileDir,'report\\'+date_today+"\\"))
+    except Exception as e:
+        logger.info("exception occured when creating date folder:"+str(e))
+        pass
+    seq = 0
+    while True:
+        seq = seq + 1
+        if seq <= 9:
+            str_seq = '0' + str(seq)
+        else:
+            str_seq = str(seq)
+        target_report = os.path.join(fileDir, 'report\\' + date_today + '\\' + str(str_seq) + '\\summary.html')
+        if not os.path.exists(target_report):
+            try:
+                os.mkdir(os.path.dirname(target_report))
+            except Exception as e:
+                logger.info("directory exist")
+            copyfile(os.path.join(fileDir,'report\summary.js'), os.path.join(os.path.dirname(target_report),'summary.js'))
+            break
 
     radiant = []
     dire = []
@@ -57,13 +80,13 @@ def generate_summary_html_report(player_array):
     threads =[]
     for i in range (1,len(player_array)+1):
         player_id = player_array[i-1]
-        file =  os.path.join(fileDir, 'report\player_temp_data\player_'+str(i)+".json")
+        file =  os.path.join(os.path.dirname(target_report), 'player_' + str(i) + ".json")
         thread = Plyaer_Info_collector_Thread(i, "thread-"+str(i), player_array[i-1], file,i)
         thread.start()
         threads.append(thread)
 
     if os.path.exists(target_report):
-        print("Target summary report file exist, deleting:")
+        logger.info("Target summary report file exist, deleting:")
         os.remove(target_report)
 
     copyfile(template_report, target_report)
@@ -72,7 +95,7 @@ def generate_summary_html_report(player_array):
         thread.join()
 
     for i in range(1, len(player_array) + 1):
-        file = os.path.join(fileDir, 'report\player_temp_data\player_' + str(i) + ".json")
+        file = os.path.join(os.path.dirname(target_report), 'player_' + str(i) + ".json")
 
 
         with open(file, 'r') as file:
@@ -93,45 +116,20 @@ def generate_summary_html_report(player_array):
         for line in file:
             print(line.replace("var diretabledata = @@", "var diretabledata ="+json.dumps(dire)+";"), end='')
 
+    webbrowser.open(target_report,new=0)
 
-def generate_summary_html_report2(player_array):
+date_today = time.strftime('%Y%m%d')
+log_file = "log/Summary_generation_"+date_today+".log"
+handler = logging.handlers.RotatingFileHandler(log_file, maxBytes = 1024*1024, backupCount = 5) # 实例化handler
+fmt = '%(asctime)s - %(filename)s:%(lineno)s - %(name)s - %(message)s'
+formatter = logging.Formatter(fmt)   # 实例化formatter
+handler.setFormatter(formatter)      # 为handler添加formatter
+logger = logging.getLogger('tst')  # 获取名为tst的logger
+logger.addHandler(handler)  # 为logger添加handler
+logger.setLevel(logging.DEBUG)
 
-    fileDir = os.path.dirname(os.path.realpath('__file__'))
-    print(fileDir)
-    template_report = os.path.join(fileDir, 'report\summary_template.html')
-    target_report = os.path.join(fileDir, 'report\summary.html')
-    radiant = []
-    dire = []
-
-    index=0
-    for player in player_array:
-        player_Obj = ODotaUtil.Player(player)
-
-        json_obj = player_Obj.to_html_source_json()
-        if index<=4:
-
-            for item in json_obj:
-                item['player_lobby'] = index+1
-                radiant.append(item)
-        else:
-
-            for item in json_obj:
-                item['player_lobby'] = index+1
-                dire.append(item)
-        index+=1
-
-    if os.path.exists(target_report):
-        print("Target summary report file exist, deleting:" )
-        os.remove(target_report)
-
-    copyfile(template_report,target_report)
-    with fileinput.FileInput(target_report, inplace=True, backup='.bak') as file:
-        for line in file:
-            print(line.replace("var radianttabledata = @@", "var radianttabledata ="+json.dumps(radiant)+";"), end='')
-    with fileinput.FileInput(target_report, inplace=True, backup='.bak') as file:
-        for line in file:
-            print(line.replace("var diretabledata = @@", "var diretabledata ="+json.dumps(dire)+";"), end='')
-
+logger.info('first info message')
+logger.debug('first debug message')
 
 
 if __name__ == "__main__":
@@ -145,17 +143,18 @@ if __name__ == "__main__":
     while(time.time()-start_time)<8*60*60:
 
         if (latest!=newcoming):
+            logger.info('Start to capture information for :\n'+'\n'.join(newcoming))
             starttime = time.time()
             try:
                 generate_summary_html_report(newcoming)
             except Exception as e:
+                logger.info("exception occured:"+str(e))
                 print("exception occured:"+str(e))
-            print('generate report done within:'+str(round((time.time()-starttime),2)))
+            logger.info('generate report done within:'+str(round((time.time()-starttime),2)))
 
             latest = newcoming
 
-            url = "D:/PycharmProjects/dota2LobbyInfo/report/summary.html"
-            webbrowser.open(url,new=0)
+
         else:
             time.sleep(5)
             times +=1

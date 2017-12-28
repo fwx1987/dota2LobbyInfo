@@ -58,9 +58,17 @@ def get_lobby_members():
 
     ' if dota2 currently is running, read from actual file, otherwise test file'
     if len(os.popen("tasklist |findstr dota2.exe").read()) > 0:
-        f = open('C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log.txt', 'r')
+        f1 = 'C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log.txt'
+        f2 = 'C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\mods\server_log.txt'
     else:
-        f = open('C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log_test.txt', 'r')
+        f1 = 'C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\dota\server_log.txt'
+        f2 = 'C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\mods\server_log.txt'
+
+    f =open(f1,'r')
+    if os.stat(f1).st_mtime > os.stat(f2).st_mtime:
+        f = open(f1,'r')
+    else:
+        f = open(f2,'r')
 
     lastline = ""
     for line in f:
@@ -77,5 +85,5 @@ if __name__ == "__main__":
     player_slot=0
 
     for member in t:
-        pass
+        print(member)
 

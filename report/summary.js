@@ -81,7 +81,7 @@ $("#radiant-table").tabulator({
 					}}
 					}
 				}},
-			{field:"rank_tier",title:"Rank",width:68,formatter:function(cell, formatterParams){
+			/*{field:"rank_tier",title:"Rank",width:68,formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
 					if ("undefined"  != typeof value){
 					if (value !=null)
@@ -92,7 +92,7 @@ $("#radiant-table").tabulator({
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
 					}
 					}
-				}},
+				}},*/
 			{title:"Player", width:150,field:"name"},
 			{title:"Solo MMR", field:"solo_mmr"},
 			{title:"Group MMR", field:"group_mmr"},
