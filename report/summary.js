@@ -42,7 +42,7 @@ $("#radiant-table").tabulator({
     //width:216,
 	//height:205, // set height of table, this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
     layout:"fitDataFill",
-	//layout:"fitColumns",
+	layout:"fitColumns",
 	//height:450,
 	//responsiveLayout:true,
 	//fitColumns:true, //fit columns to width of table (optional)
@@ -51,7 +51,7 @@ $("#radiant-table").tabulator({
 	//groupStartOpen:false,
 	
     columns:[ //Define Table Columns
-			{title:"SN", field:"player_lobby"},
+			{title:"SN",width:20,field:"player_lobby"},
 			
 			/*,formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
@@ -64,8 +64,8 @@ $("#radiant-table").tabulator({
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
 					}
 				}*/
-				
-			{field:"avatar",width:68,formatter:function(cell, formatterParams){
+				//,width:68
+			{field:"avatar",formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
 					if ("undefined"  != typeof value){
 					if (value !=null)
@@ -92,15 +92,29 @@ $("#radiant-table").tabulator({
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
 					}
 					}
-				}},*/
-			{title:"Player", width:150,field:"name"},
+				}},*/ //, width:150
+			{title:"Player",align:"center",field:"name"},
 			{title:"Solo MMR", field:"solo_mmr"},
 			{title:"Group MMR", field:"group_mmr"},
 			{title:"Est MMR", field:"mmr_estimate"},
-			{title:"Match History", field:"matches_win_history",width:200, formatter:tristateFormatter},
-			{title:"GPM Box Plot", field:"gpm_hisotry",width:200, formatter:boxFormatter }
-			
-			
+			{title:"Match History", field:"matches_win_history", formatter:tristateFormatter}, //,width:200
+			{title:"GPM Box Plot", field:"gpm_hisotry", formatter:boxFormatter }, //,width:200
+			{title:"Details", field:"account_id", formatter:function(cell, formatterParams){ //,width:200
+				   var value = cell.getValue();
+					if ("undefined"  != typeof value){
+					if (value !=null)
+					{
+				
+					if(JSON.stringify(cell.getData()).indexOf("account_id") >=0){ // account row
+						return "<a target=\"_blank\" href='https://zh.dotabuff.com/players/"+value + "'\">details</a>";
+						//return "<img src='"+value + "' style=\"width:auto;height:auto;\"/>";
+						//background-size: cover;
+					//}else{  // hero row
+					//	return "<a href='http://dotamax.com/match/details/"+value + "'>details</a>";
+					//	//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
+					}}
+					}
+				}}
 
     ],
 	
@@ -127,33 +141,33 @@ $("#radiant-table").tabulator({
 			element.empty();
 			
 			table = $("<table class=\"player_hero\" id='heroes_tbl_for_player_"+data.player_lobby+"' tyle=\"margin-left:auto;margin-right:auto;text-overflow:ellipsis;align-content: center;background-color:text-align:center; black;border: 1px;font-size: 14px;text-align: center;font-family: monospace;color: white;\"><tr></tr></table>");
-			$("tr", table).append("<td class='hero_index' style=\"width: 2%;text-align: center;\">" + index + "</td>");
+			$("tr", table).append("<td class='hero_index ' style=\"width: 2%;text-align: center;color:white\">" + index + "</td>");
 			
-			$("tr", table).append("<td class='hero_img' style=\"width:8%\"><img src='" + data.hero_img + "'></td>");
-			$("tr", table).append("<td class='hero_name' style=\"width:18%;text-align: left;color:blue\">" + data.hero_name + "</td>");
+			$("tr", table).append("<td class='hero_img ' style=\"width:8%\"><img src='" + data.hero_img + "'></td>");
+			$("tr", table).append("<td class='hero_name ' style=\"width:18%;text-align: left;color:blue\">" + data.hero_name + "</td>");
 			
 			
 			switch(data.skill)
 			{
 				case 1:
-				$("tr", table).append("<td class='hero_skill' style=\"width:14%;color: #999999;\"> Normal </td>");
+				$("tr", table).append("<td class='hero_skill ' style=\"width:14%;color: #999999;\"> Normal </td>");
 				break;
 				case 2:
-				$("tr", table).append("<td class='hero_skill' style=\"width:14%;color: #E6E8FA;\"> High </td>");
+				$("tr", table).append("<td class='hero_skill ' style=\"width:14%;color: #E6E8FA;\"> High </td>");
 				break
 				case 3:
-				$("tr", table).append("<td class='hero_skill' style=\"width:14%;color: #f0a868;\"> Very High </td>");
+				$("tr", table).append("<td class='hero_skill ' style=\"width:14%;color: #f0a868;\"> Very High </td>");
 				break;
 				default:
-				$("tr", table).append("<td class='hero_skill' style=\"width:14%;color: red;\"> "+data.skill+" </td>");
+				$("tr", table).append("<td class='hero_skill ' style=\"width:14%;color: red;\"> "+data.skill+" </td>");
 				break;
 			}
 			
 		
 			if (data.win_lose==1){
-				$("tr", table).append("<td class='hero_name' style=\"width:14%;color: #499249 !important;\"> Win </td>");
+				$("tr", table).append("<td class='hero_name ' style=\"width:14%;color: #499249 !important;\"> Win </td>");
 			}else if (data.win_lose==-1){
-				$("tr", table).append("<td class='hero_name' style=\"width:14%;color: #c23c2a !important;\"> Lost </td>");
+				$("tr", table).append("<td class='hero_name ' style=\"width:14%;color: #c23c2a !important;\"> Lost </td>");
 			}
 		
 			
@@ -162,11 +176,11 @@ $("#radiant-table").tabulator({
 			
 			
 			
-			$("tr", table).append("<td class='hero_period' style=\"width:15%;color:white\">" + data.period + "</td>");
-			$("tr", table).append("<td class='hero_gpm' style=\"width:10%;color:yellow;\"> " + data.gold_per_min + "</td>");
-			$("tr", table).append("<td class='hero_xpm' style=\"width:10%;color:darkblue;\"> " + data.xp_per_min + "</td>");
-			$("tr", table).append("<td class='hero_kda' style=\"width:30%;color:white\"> " + data.kills + "/"+data.deaths+"/"+data.assists+"</td>");
-
+			$("tr", table).append("<td class='hero_period ' style=\"width:15%;color:white\">" + data.period + "</td>");
+			$("tr", table).append("<td class='hero_gpm ' style=\"width:10%;color:yellow;\"> " + data.gold_per_min + "</td>");
+			$("tr", table).append("<td class='hero_xpm ' style=\"width:10%;color:darkblue;\"> " + data.xp_per_min + "</td>");
+			$("tr", table).append("<td class='hero_kda ' style=\"width:30%;color:white\"> " + data.kills + "/"+data.deaths+"/"+data.assists+"</td>");
+			$("tr", table).append("<td class='hero_details ' style=\"width:30%;color:white\"> <a target=\"_blank\" href='https://zh.dotabuff.com/matches/"+data.match_id + "'>details</a></td>");
 			
 
 			//add row data on right hand side
@@ -250,6 +264,7 @@ $("#dire-table").tabulator({
     //width:216,
 	//height:205, // set height of table, this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
     layout:"fitDataFill",
+	layout:"fitColumns",
 	//layout:"fitColumns",
 	//height:450,
 	//responsiveLayout:true,
@@ -259,7 +274,7 @@ $("#dire-table").tabulator({
 	//groupStartOpen:false,
 	
     columns:[ //Define Table Columns
-			{title:"SN", field:"player_lobby"},
+			{title:"SN", width:20,field:"player_lobby"},
 			
 			/*,formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
@@ -273,7 +288,7 @@ $("#dire-table").tabulator({
 					}
 				}*/
 				
-			{field:"avatar",width:68,formatter:function(cell, formatterParams){
+			{field:"avatar",formatter:function(cell, formatterParams){
 				   var value = cell.getValue();
 					if ("undefined"  != typeof value){
 						if (value !=null)
@@ -287,14 +302,28 @@ $("#dire-table").tabulator({
 						//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
 					}}}
 				}},
-			{title:"Player", width:150,field:"name"},
+			{title:"Player",align:"center",field:"name"},
 			{title:"Solo MMR", field:"solo_mmr"},
 			{title:"Group MMR", field:"group_mmr"},
 			{title:"Est MMR", field:"mmr_estimate"},
-			{title:"Match History", field:"matches_win_history",width:200, formatter:tristateFormatter},
-			{title:"GPM Box Plot", field:"gpm_hisotry",width:200, formatter:boxFormatter }
-			
-			
+			{title:"Match History", field:"matches_win_history", formatter:tristateFormatter}, //,width:200
+			{title:"GPM Box Plot", field:"gpm_hisotry", formatter:boxFormatter }, //,width:200
+			{title:"Details", field:"account_id", formatter:function(cell, formatterParams){ //,width:200
+				   var value = cell.getValue();
+					if ("undefined"  != typeof value){
+					if (value !=null)
+					{
+				
+					if(JSON.stringify(cell.getData()).indexOf("account_id") >=0){ // account row
+						return "<a target=\"_blank\" href='https://zh.dotabuff.com/players/"+value + "'\">details</a>";
+						//return "<img src='"+value + "' style=\"width:auto;height:auto;\"/>";
+						//background-size: cover;
+					//}else{  // hero row
+					//	return "<a href='http://dotamax.com/match/details/"+value + "'>details</a>";
+					//	//return "<img src='"+value + "' style=\"height:50;width:auto;\"/>";;
+					}}
+					}
+				}}
 
     ],
 	
@@ -321,33 +350,33 @@ $("#dire-table").tabulator({
 			element.empty();
 			
 			table = $("<table class=\"player_hero\" id='heroes_tbl_for_player_"+data.player_lobby+"' tyle=\"margin-left:auto;margin-right:auto;text-overflow:ellipsis;align-content: center;background-color:text-align:center; black;border: 1px;font-size: 14px;text-align: center;font-family: monospace;color: white;\"><tr></tr></table>");
-			$("tr", table).append("<td class='hero_index' style=\"width: 2%;text-align: center;\">" + index + "</td>");
+			$("tr", table).append("<td class='hero_index ' style=\"width: 2%;text-align: center;color:white\">" + index + "</td>");
 			
-			$("tr", table).append("<td class='hero_img' style=\"width:8%\"><img src='" + data.hero_img + "'></td>");
-			$("tr", table).append("<td class='hero_name' style=\"width:18%;text-align: left;color:blue\">" + data.hero_name + "</td>");
+			$("tr", table).append("<td class='hero_img ' style=\"width:8%\"><img src='" + data.hero_img + "'></td>");
+			$("tr", table).append("<td class='hero_name ' style=\"width:18%;text-align: left;color:blue\">" + data.hero_name + "</td>");
 			
 			
 			switch(data.skill)
 			{
 				case 1:
-				$("tr", table).append("<td class='hero_skill' style=\"width:14%;color: #999999;\"> Normal </td>");
+				$("tr", table).append("<td class='hero_skill ' style=\"width:14%;color: #999999;\"> Normal </td>");
 				break;
 				case 2:
-				$("tr", table).append("<td class='hero_skill' style=\"width:14%;color: #E6E8FA;\"> High </td>");
+				$("tr", table).append("<td class='hero_skill ' style=\"width:14%;color: #E6E8FA;\"> High </td>");
 				break
 				case 3:
-				$("tr", table).append("<td class='hero_skill' style=\"width:14%;color: #f0a868;\"> Very High </td>");
+				$("tr", table).append("<td class='hero_skill ' style=\"width:14%;color: #f0a868;\"> Very High </td>");
 				break;
 				default:
-				$("tr", table).append("<td class='hero_skill' style=\"width:14%;color: red;\"> "+data.skill+" </td>");
+				$("tr", table).append("<td class='hero_skill ' style=\"width:14%;color: red;\"> "+data.skill+" </td>");
 				break;
 			}
 			
 		
 			if (data.win_lose==1){
-				$("tr", table).append("<td class='hero_name' style=\"width:14%;color: #499249 !important;\"> Win </td>");
+				$("tr", table).append("<td class='hero_name ' style=\"width:14%;color: #499249 !important;\"> Win </td>");
 			}else if (data.win_lose==-1){
-				$("tr", table).append("<td class='hero_name' style=\"width:14%;color: #c23c2a !important;\"> Lost </td>");
+				$("tr", table).append("<td class='hero_name ' style=\"width:14%;color: #c23c2a !important;\"> Lost </td>");
 			}
 		
 			
@@ -356,11 +385,11 @@ $("#dire-table").tabulator({
 			
 			
 			
-			$("tr", table).append("<td class='hero_period' style=\"width:15%;color:white\">" + data.period + "</td>");
-			$("tr", table).append("<td class='hero_gpm' style=\"width:10%;color:yellow;\"> " + data.gold_per_min + "</td>");
-			$("tr", table).append("<td class='hero_xpm' style=\"width:10%;color:darkblue;\"> " + data.xp_per_min + "</td>");
-			$("tr", table).append("<td class='hero_kda' style=\"width:30%;color:white\"> " + data.kills + "/"+data.deaths+"/"+data.assists+"</td>");
-
+			$("tr", table).append("<td class='hero_period ' style=\"width:15%;color:white\">" + data.period + "</td>");
+			$("tr", table).append("<td class='hero_gpm ' style=\"width:10%;color:yellow;\"> " + data.gold_per_min + "</td>");
+			$("tr", table).append("<td class='hero_xpm ' style=\"width:10%;color:darkblue;\"> " + data.xp_per_min + "</td>");
+			$("tr", table).append("<td class='hero_kda ' style=\"width:30%;color:white\"> " + data.kills + "/"+data.deaths+"/"+data.assists+"</td>");
+			$("tr", table).append("<td class='hero_details ' style=\"width:30%;color:white\"> <a target=\"_blank\" href='https://zh.dotabuff.com/matches/"+data.match_id + "'>details</a></td>");
 			
 
 			//add row data on right hand side
