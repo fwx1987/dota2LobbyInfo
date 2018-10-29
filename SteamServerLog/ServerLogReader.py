@@ -1,7 +1,10 @@
 import os,socket
 import time,logging,logging.handlers
+
+
+
 date_today = time.strftime('%Y%m%d')
-log_file = "log/Nvidia_recorder_"+date_today+".log"
+log_file = "log/ServerLogReader_"+date_today+".log"
 handler = logging.handlers.RotatingFileHandler(log_file, maxBytes = 1024*1024, backupCount = 5) # 实例化handler
 fmt = '%(asctime)s - %(filename)s:%(lineno)s - %(name)s - %(message)s'
 formatter = logging.Formatter(fmt)   # 实例化formatter
@@ -13,6 +16,8 @@ consoleHandler = logging.StreamHandler()
 consoleHandler.setFormatter(formatter)
 logger.addHandler(consoleHandler)
 
+#recommended setting:
+# 1080 p 60 FPS, 20m bitrate.
 class LatestLobby:
     raw_string=""
 
@@ -84,7 +89,7 @@ def get_lobby_members():
 
 
     lastline = ""
-    for line in get_server_log_file:
+    for line in get_server_log_file():
         if "Lobby" in line:
             lastline = line
     last = LatestLobby(lastline)

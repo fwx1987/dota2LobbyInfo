@@ -1,9 +1,10 @@
 import os,time,logging,logging.handlers
 from pynput.keyboard import Key,Controller
 from SteamServerLog import ServerLogReader
+from Media import MediaPlayer
 videoRecordingFolder = "/Users/wenxiang/PycharmProjects/dota2LobbyInfo/data/video/"
 
-videoRecordingFolder = "D://dota video//Nvidia//Desktop"
+videoRecordingFolder = "D://dota video//Nvidia"
 
 
 wait_action_time= 10
@@ -25,10 +26,20 @@ logger.addHandler(consoleHandler)
 ' get folder file total size.'
 def getFolderTotalSize(folder):
     size = 0
+    '''
     for file in os.listdir(folder):
-        size = size + os.path.getsize(folder+"/"+file)
+        if not os.path.isdir(file):
+            size = size + os.path.getsize(folder+"/"+file)
+        else:
+            size = size + getFolderTotalSize(file)
     return size
-
+    '''
+    total_size = 0
+    for dirpath, dirnames, filenames in os.walk(folder):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            total_size += os.path.getsize(fp)
+    return total_size
 def is_video_recording():
     size = getFolderTotalSize(videoRecordingFolder)
 
@@ -72,13 +83,16 @@ def is_process_running():
         return False
 
 def start_video_recording():
-    emit_hot_key("Alt+F9")
+    #emit_hot_key("Alt+F9")
+    MediaPlayer.play_music("")
     if is_video_recording() == True:
+
         pass
     else:
         emit_hot_key("Alt+F9")
 
 def emit_hot_key(hot_key):
+    return True
     logger.info(hot_key.split("+"))
     keyboard = Controller()
 
@@ -107,12 +121,16 @@ def emit_hot_key(hot_key):
     return True
 
 def stop_video_recording():
+
     if is_video_recording():
-        emit_hot_key("Alt+F9")
+        #emit_hot_key("Alt+F9")
+        MediaPlayer.play_music("")
     else:
+        #MediaPlayer.play_music("")
         return
 
 if __name__ == "__main__":
+
 
     start_time = time.time()
     #loop for 8 hours
@@ -132,12 +150,13 @@ if __name__ == "__main__":
                         time.sleep(wait_action_time*times)
                 else:
                     logger.info("Recording starting, wait for "+str(wait_action_time)+"seconds to check again...")
-                    start_video_recording()
+                    #start_video_recording()
                     time.sleep(wait_action_time)
             if status == "idle" or status == "in_game_watching":
                 logger.info("Recording stopping, wait for "+str(wait_action_time)+"seconds to check again...")
                 stop_video_recording()
                 time.sleep(wait_action_time)
+        time.sleep(wait_action_time)
 
 
 
