@@ -10,6 +10,7 @@ import time
 import webbrowser,threading
 import logging,logging.handlers
 
+import config
 
 def get_player_info_to_file(player_id,file,player_lobby):
     player_Obj = ODotaUtil.Player(player_id)
@@ -48,7 +49,6 @@ class Plyaer_Info_collector_Thread (threading.Thread):
 def generate_summary_html_report(player_array):
 
     fileDir = os.path.dirname(os.path.realpath('__file__'))
-    print(fileDir)
     template_report = os.path.join(fileDir, 'report\summary_template.html')
     target_report = os.path.join(fileDir, 'report\summary.html')
     date_today = time.strftime('%Y%m%d')
@@ -117,23 +117,21 @@ def generate_summary_html_report(player_array):
             print(line.replace("var diretabledata = @@", "var diretabledata ="+json.dumps(dire)+";"), end='')
 
     webbrowser.open(target_report,new=0)
-
+'''
 date_today = time.strftime('%Y%m%d')
 log_file = "log/Summary_generation_"+date_today+".log"
 handler = logging.handlers.RotatingFileHandler(log_file, maxBytes = 1024*1024, backupCount = 5) # 实例化handler
 fmt = '%(asctime)s - %(filename)s:%(lineno)s - %(name)s - %(message)s'
 formatter = logging.Formatter(fmt)   # 实例化formatter
 handler.setFormatter(formatter)      # 为handler添加formatter
-logger = logging.getLogger('tst')  # 获取名为tst的logger
+logger = logging.getLogger('Lobby Summary')  # 获取名为Lobby Summary的logger
 logger.addHandler(handler)  # 为logger添加handler
 logger.setLevel(logging.DEBUG)
+'''
 
-logger.info('first info message')
-logger.debug('first debug message')
+logger = logging.getLogger(__name__)
 
-
-if __name__ == "__main__":
-
+def main():
     latest = []
     newcoming =ServerLogReader.get_lobby_members()
     times = 1
@@ -141,15 +139,15 @@ if __name__ == "__main__":
     start_time = time.time()
     latest = []
     while(time.time()-start_time)<8*60*60:
+        '''iterative the app for running with 8 hours'''
 
         if (latest!=newcoming):
-            logger.info('Start to capture information for :\n'+'\n'.join(newcoming))
+            logger.info('Start to capture information for :'+'，'.join(newcoming))
             starttime = time.time()
             try:
                 generate_summary_html_report(newcoming)
             except Exception as e:
                 logger.info("exception occured:"+str(e))
-                print("exception occured:"+str(e))
             logger.info('generate report done within:'+str(round((time.time()-starttime),2)))
 
             latest = newcoming
@@ -159,4 +157,9 @@ if __name__ == "__main__":
             time.sleep(5)
             times +=1
             newcoming = ServerLogReader.get_lobby_members()
-    
+
+
+
+if __name__ == "__main__":
+
+    main()

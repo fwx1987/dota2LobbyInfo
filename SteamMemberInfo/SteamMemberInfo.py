@@ -1,4 +1,4 @@
-import dota2api
+
 import json,time,os
 from operator import itemgetter,attrgetter
 import sqlite3
@@ -8,7 +8,7 @@ __steam_api_key__= None
 __game_data__ = None
 
 __heroes__ = None
-
+'''
 def get_member_game_history(user_dota2_id):
     api = dota2api.Initialise("4B1FD9D1888114755F2A9C7B5788A085")
     try:
@@ -31,7 +31,7 @@ def get_game_details(dota2_game_id):
             __game_data__ = api.get_match_details(match_id=dota2_game_id)
             Util.db_insert_match_details(dota2_game_id,json.dumps(__game_data__))
         return __game_data__
-'''
+
         game_file =  "D:/PycharmProjects/data/game/"+str(dota2_game_id)+".txt"
         if os.path.exists(game_file):
             ##print ("has exsting file:"+game_file)
@@ -51,6 +51,7 @@ def get_game_details(dota2_game_id):
 '''
 def export_dict_to_file(dict,file):
     pass
+'''
 def get_game_player_gpm(dota2_game_id,dota2_player_id):
     global __game_data__
     if not __game_data__ or __game_data__['match_id'] !=  dota2_game_id:
@@ -87,7 +88,6 @@ def get_game_player_hero(dota2_game_id,dota2_player_id):
 
     return 0
 
-
 def is_game_player_win(dota2_game_id,dota2_player_id):
     global __game_data__
     if not __game_data__ or __game_data__['match_id'] !=  dota2_game_id:
@@ -114,6 +114,7 @@ def is_game_player_win(dota2_game_id,dota2_player_id):
         else:
             return True
 
+'''
 class HeroRecord:
     '''hero_id = 0
     number_of_games = 0

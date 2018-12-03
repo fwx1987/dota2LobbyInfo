@@ -1,20 +1,12 @@
 import os,socket
 import time,logging,logging.handlers
+import config
+
+config.get_root_directory()
 
 
+logger = logging.getLogger(__name__)
 
-date_today = time.strftime('%Y%m%d')
-log_file = "log/ServerLogReader_"+date_today+".log"
-handler = logging.handlers.RotatingFileHandler(log_file, maxBytes = 1024*1024, backupCount = 5) # 实例化handler
-fmt = '%(asctime)s - %(filename)s:%(lineno)s - %(name)s - %(message)s'
-formatter = logging.Formatter(fmt)   # 实例化formatter
-handler.setFormatter(formatter)      # 为handler添加formatter
-logger = logging.getLogger('ServerLogReader')  # 获取名为tst的logger
-logger.addHandler(handler)  # 为logger添加handler
-logger.setLevel(logging.DEBUG)
-consoleHandler = logging.StreamHandler()
-consoleHandler.setFormatter(formatter)
-logger.addHandler(consoleHandler)
 
 #recommended setting:
 # 1080 p 60 FPS, 20m bitrate.
@@ -94,6 +86,7 @@ def get_lobby_members():
             lastline = line
     last = LatestLobby(lastline)
 
+    logger.info("get lobby info as :"+str(last.get_lobby_members()))
 
     return last.get_lobby_members()
 
@@ -116,7 +109,7 @@ def get_player_status():
 
 if __name__ == "__main__":
     t = get_lobby_members()
-
+    logger.info("test")
     player_slot=0
 
     for member in t:
