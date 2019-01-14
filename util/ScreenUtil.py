@@ -1,6 +1,7 @@
 import pyscreenshot as ImageGrab
 from screeninfo import get_monitors
 import util.OSUtil as OSUtil
+import config
 
 from PIL import Image
 
@@ -58,7 +59,34 @@ def getMainScreenWidth():
 
 def imageResize(file,newfileName):
     im = Image.open(file)
+    size = 1920,1080
     im.resize(size, Image.ANTIALIAS).save(newfileName, "PNG")
+
+
+def captureScreenAndResize(newFileName):
+
+    working_directory = config.get_root_directory()+"/data/temp/"
+
+    im = ImageGrab.grab()  # X1,Y1,X2,Y2
+
+    raw_file = working_directory +"raw_screenshot.png"
+    resized_file = working_directory +"/"+newFileName+".png"
+
+    im.save(raw_file)
+
+
+
+    imageResize(raw_file,resized_file)
+
+    pass
+
+
+def corpImagePartial():
+    im = Image.open("test-600.png")
+    box = (100, 100, 200, 200)
+
+    cropped_image = im.crop(box)
+    cropped_image.save('crooped.png')
 
 
 if __name__ == "__main__":
@@ -75,11 +103,11 @@ if __name__ == "__main__":
 
     #im.save('screenshot.png')
 
-
-
+    #captureScreenAndResize("test")
+    corpImagePartial()
     #im.show()
-    size = 1920,1080
-    im = Image.open("screenshot.png")
-    im.resize(size, Image.ANTIALIAS).save("test-600.png","PNG")
+    #size = 1920,1080
+    #im = Image.open("screenshot.png")
+    #im.resize(size, Image.ANTIALIAS).save("test-600.png","PNG")
 
     print("123")
