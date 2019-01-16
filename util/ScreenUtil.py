@@ -81,12 +81,13 @@ def captureScreenAndResize(newFileName):
     pass
 
 
-def corpImagePartial():
+# box = (10,10,200,200)
+#saved name = saved_corpped
+def corpImagePartial(box, savedname):
     im = Image.open("test-600.png")
-    box = (100, 100, 200, 200)
 
     cropped_image = im.crop(box)
-    cropped_image.save('crooped.png')
+    cropped_image.save(savedname+'.png')
 
 
 if __name__ == "__main__":
