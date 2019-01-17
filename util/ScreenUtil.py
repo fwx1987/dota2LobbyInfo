@@ -10,7 +10,7 @@ __MainScreenResolution_width__ = None
 __MainScreenResolution_height__ = None
 
 
-def getMainScreenResolution():
+def get_main_screen_resolution():
     global __MainScreenResolution__
     if __MainScreenResolution__ is not None:
         return __MainScreenResolution__
@@ -34,7 +34,7 @@ def getMainScreenHeight():
     global __MainScreenResolution_height__
 
     if __MainScreenResolution__ is None:
-        getMainScreenResolution()
+        get_main_screen_resolution()
 
     if __MainScreenResolution_height__ is None:
         __MainScreenResolution_height__ = __MainScreenResolution__.split("x")[1]
@@ -49,7 +49,7 @@ def getMainScreenWidth():
     global __MainScreenResolution_height__
 
     if __MainScreenResolution__ is None:
-        getMainScreenResolution()
+        get_main_screen_resolution()
 
     if __MainScreenResolution_width__ is None:
         __MainScreenResolution_width__ = __MainScreenResolution__.split("x")[0]
@@ -82,8 +82,8 @@ def captureScreenAndResize(newFileName):
 
 
 # box = (10,10,200,200)
-#saved name = saved_corpped
-def corpImagePartial(box, savedname):
+# saved name = saved_corped
+def crop_image_partial(box, savedname):
     im = Image.open("test-600.png")
 
     cropped_image = im.crop(box)
@@ -105,7 +105,7 @@ if __name__ == "__main__":
     #im.save('screenshot.png')
 
     #captureScreenAndResize("test")
-    corpImagePartial()
+    crop_image_partial()
     #im.show()
     #size = 1920,1080
     #im = Image.open("screenshot.png")
